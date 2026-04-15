@@ -71,7 +71,7 @@
       background: var(--naranja);
       color: #fff;
     }
-    .btn-orange:hover { background: #d97a00; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(242,138,0,.3); }
+    .btn-orange:hover { background: #d97a00; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(242,138,0,.3); animation: none !important; }
     .btn-outline {
       background: transparent;
       color: #fff;
@@ -86,6 +86,14 @@
       z-index: 100;
       background: var(--azul-noche);
       border-bottom: 1px solid rgba(181,212,244,.12);
+      transition: background 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+    }
+    nav.scrolled {
+      background: rgba(4, 44, 83, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 2px 28px rgba(0,0,0,0.2);
+      border-bottom-color: rgba(181,212,244,.08);
     }
     .nav-inner {
       display: flex;
@@ -145,6 +153,8 @@
       gap: 5px;
       cursor: pointer;
       padding: 4px;
+      background: none;
+      border: none;
     }
     .nav-toggle span {
       display: block;
@@ -154,10 +164,44 @@
       border-radius: 2px;
       transition: all .25s;
     }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Availability badge ── */
+    .avail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 999px;
+      padding: 6px 14px 6px 10px;
+      margin-bottom: 16px;
+      font-size: .8rem;
+      color: rgba(255,255,255,.8);
+      font-weight: 500;
+    }
+    .avail-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+      animation: dot-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dot-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+      50%       { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
 
     /* ── Hero ── */
     #hero {
       background: var(--azul-profundo);
+      background-image:
+        linear-gradient(rgba(181,212,244,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(181,212,244,.035) 1px, transparent 1px);
+      background-size: 52px 52px;
       padding: 96px 0 80px;
       position: relative;
       overflow: hidden;
@@ -200,6 +244,39 @@
     }
     .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
+    /* ── CTA pulse animation ── */
+    @keyframes pulse-orange {
+      0%, 100% { box-shadow: 0 8px 24px rgba(242,138,0,.25), 0 0 0 0 rgba(242,138,0,.35); }
+      55%       { box-shadow: 0 8px 24px rgba(242,138,0,.25), 0 0 0 12px rgba(242,138,0,0); }
+    }
+    #hero .btn-orange,
+    #cta .btn-orange {
+      animation: pulse-orange 3s ease-in-out infinite;
+    }
+
+    /* ── Gradient section separators ── */
+    .gradient-sep {
+      height: 1px;
+      border: none;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(24,95,165,.22) 25%,
+        rgba(242,138,0,.18) 50%,
+        rgba(24,95,165,.22) 75%,
+        transparent 100%
+      );
+      margin: 0;
+    }
+    .gradient-sep--light {
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(181,212,244,.18) 30%,
+        rgba(181,212,244,.30) 50%,
+        rgba(181,212,244,.18) 70%,
+        transparent 100%
+      );
+    }
+
     /* ── Cómo funciona ── */
     #como-funciona {
       background: var(--gris-fondo);
@@ -227,22 +304,38 @@
       padding: 36px 28px;
       box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
       position: relative;
+      overflow: hidden;
+      border: 1.5px solid transparent;
+      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+    .step:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.10), 0 0 0 0 transparent;
+      border-color: var(--naranja);
     }
     .step-num {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 3rem;
+      font-size: 7rem;
       font-weight: 800;
-      color: var(--azul-claro);
+      color: var(--azul-principal);
+      opacity: .07;
       line-height: 1;
-      margin-bottom: 16px;
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -.04em;
     }
     .step h3 {
       font-size: 1.1rem;
       font-weight: 700;
       color: #0f172a;
       margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
     }
-    .step p { font-size: .93rem; color: var(--gris-texto); line-height: 1.65; }
+    .step p { font-size: .93rem; color: var(--gris-texto); line-height: 1.65; position: relative; z-index: 1; }
 
     /* ── Servicios ── */
     #servicios { background: #fff; padding: 88px 0; }
@@ -268,6 +361,11 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+    .modelo-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 16px 48px rgba(242,138,0,.14), 0 0 0 2px var(--naranja);
     }
     .modelo-card.gestionado {
       background: var(--azul-noche);
@@ -277,6 +375,9 @@
       background: var(--gris-fondo);
       border: 1px solid #e5e7eb;
       color: #0f172a;
+    }
+    .modelo-card.implementacion:hover {
+      border-color: transparent;
     }
     .modelo-tag {
       display: inline-block;
@@ -364,12 +465,13 @@
       font-size: .86rem;
       color: #374151;
       font-weight: 500;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .ejemplo-chip:hover {
+      border-color: var(--azul-claro);
+      box-shadow: 0 2px 10px rgba(24,95,165,.08);
     }
     .ejemplo-chip svg { width: 15px; height: 15px; color: var(--azul-principal); flex-shrink: 0; }
-    @media (max-width: 640px) {
-      .modelos-grid { grid-template-columns: 1fr; }
-      .modelo-card { padding: 28px 24px; }
-    }
 
     /* ── IT section ── */
     #it-section {
@@ -471,6 +573,20 @@
       text-align: center;
     }
 
+    /* ── Fade-in scroll animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: .1s; }
+    .fade-in-delay-2 { transition-delay: .2s; }
+    .fade-in-delay-3 { transition-delay: .3s; }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .nav-links { display: none; flex-direction: column; gap: 0; }
@@ -478,7 +594,9 @@
         display: flex;
         position: absolute;
         top: 68px; left: 0; right: 0;
-        background: var(--azul-noche);
+        background: rgba(4,44,83,.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-top: 1px solid rgba(181,212,244,.12);
         padding: 12px 0 20px;
       }
@@ -489,7 +607,8 @@
       nav { position: relative; }
 
       .steps { grid-template-columns: 1fr; gap: 20px; }
-      .services-grid { grid-template-columns: 1fr; }
+      .modelos-grid { grid-template-columns: 1fr; }
+      .modelo-card { padding: 28px 24px; }
       .metrics { grid-template-columns: 1fr; gap: 24px; }
       .hero-btns { flex-direction: column; }
       .btn { justify-content: center; }
@@ -505,7 +624,7 @@
 <body>
 
   <!-- NAV -->
-  <nav>
+  <nav id="mainNav">
     <div class="container nav-inner">
       <a href="#" class="logo">
         <div class="logo-icon">
@@ -521,9 +640,9 @@
         <li><a href="#it-section">Nosotros</a></li>
         <li><a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="nav-cta">Agendar reunión</a></li>
       </ul>
-      <div class="nav-toggle" id="navToggle" aria-label="Menú">
+      <button class="nav-toggle" id="navToggle" aria-label="Menú">
         <span></span><span></span><span></span>
-      </div>
+      </button>
     </div>
   </nav>
 
@@ -531,6 +650,10 @@
   <section id="hero">
     <div class="container">
       <div class="hero-content">
+        <div class="avail-badge">
+          <span class="avail-dot"></span>
+          Disponible para nuevos proyectos
+        </div>
         <span class="badge">Implementación de IA y automatizaciones para empresas</span>
         <h1>Tu equipo trabaja en lo que importa.<br><em>Nosotros automatizamos el resto.</em></h1>
         <p>Eliminamos los procesos manuales de tu empresa usando inteligencia artificial. Sin que necesites contratar un equipo de IT.</p>
@@ -545,23 +668,25 @@
     </div>
   </section>
 
+  <hr class="gradient-sep">
+
   <!-- CÓMO FUNCIONA -->
   <section id="como-funciona">
     <div class="container">
-      <p class="section-label">Cómo funciona</p>
-      <h2 class="section-title">Tres pasos, sin complicaciones</h2>
+      <p class="section-label fade-in">Cómo funciona</p>
+      <h2 class="section-title fade-in">Tres pasos, sin complicaciones</h2>
       <div class="steps">
-        <div class="step">
+        <div class="step fade-in">
           <div class="step-num">01</div>
           <h3>Nos contás tu problema</h3>
           <p>Reunión gratuita de 30 minutos. Analizamos qué procesos manuales te están costando tiempo y plata.</p>
         </div>
-        <div class="step">
+        <div class="step fade-in fade-in-delay-1">
           <div class="step-num">02</div>
           <h3>Construimos la solución</h3>
           <p>Diseñamos e implementamos el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
         </div>
-        <div class="step">
+        <div class="step fade-in fade-in-delay-2">
           <div class="step-num">03</div>
           <h3>Funciona solo</h3>
           <p>Entregamos todo funcionando. Nos quedamos disponibles para mantenimiento y mejoras.</p>
@@ -570,19 +695,21 @@
     </div>
   </section>
 
+  <hr class="gradient-sep">
+
   <!-- SERVICIOS -->
   <section id="servicios">
     <div class="container">
-      <p class="section-label">Servicios</p>
-      <h2 class="section-title">Escuchamos el problema.<br>Construimos la solución.</h2>
+      <p class="section-label fade-in">Servicios</p>
+      <h2 class="section-title fade-in">Escuchamos el problema.<br>Construimos la solución.</h2>
 
-      <div class="servicios-intro">
+      <div class="servicios-intro fade-in">
         <p>No vendemos herramientas ni paquetes cerrados. Nos sentamos con vos, entendemos cómo trabaja tu empresa, y diseñamos algo que se adapta exactamente a ese problema. Cada solución es distinta porque cada empresa es distinta.</p>
       </div>
 
       <div class="modelos-grid">
 
-        <div class="modelo-card gestionado">
+        <div class="modelo-card gestionado fade-in">
           <span class="modelo-tag">Servicio gestionado</span>
           <h3>Nos encargamos de todo. Vos solo ves el resultado.</h3>
           <p class="modelo-desc">Ideal para empresas que no quieren saber nada de tecnología. Construimos, implementamos y mantenemos todo. El cliente no toca ningún sistema.</p>
@@ -594,7 +721,7 @@
           </ul>
         </div>
 
-        <div class="modelo-card implementacion">
+        <div class="modelo-card implementacion fade-in fade-in-delay-1">
           <span class="modelo-tag">Implementación con el equipo</span>
           <h3>Tu equipo lidera. Nosotros implementamos la IA.</h3>
           <p class="modelo-desc">Para empresas que tienen equipo técnico y quieren incorporar IA en sus propias herramientas. Trabajamos junto a ellos para que quede integrado en su infraestructura.</p>
@@ -608,8 +735,8 @@
 
       </div>
 
-      <p class="ejemplos-label">Algunos ejemplos de lo que hemos construido</p>
-      <div class="ejemplos-grid">
+      <p class="ejemplos-label fade-in">Algunos ejemplos de lo que hemos construido</p>
+      <div class="ejemplos-grid fade-in">
         <span class="ejemplo-chip">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           Bot de WhatsApp con IA
@@ -635,24 +762,26 @@
     </div>
   </section>
 
+  <hr class="gradient-sep gradient-sep--light">
+
   <!-- IT SECTION -->
   <section id="it-section">
     <div class="container">
-      <p class="it-label">Para empresas sin equipo técnico</p>
-      <h2>No tenés equipo de IT.<br>Nos tenés a nosotros.</h2>
-      <p class="it-sub">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hacemos nosotros.</p>
+      <p class="it-label fade-in">Para empresas sin equipo técnico</p>
+      <h2 class="fade-in">No tenés equipo de IT.<br>Nos tenés a nosotros.</h2>
+      <p class="it-sub fade-in">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hacemos nosotros.</p>
       <div class="metrics">
-        <div class="metric">
+        <div class="metric fade-in">
           <div class="metric-value">Llave en mano</div>
           <div class="metric-label">Sin fricción técnica</div>
           <div class="metric-desc">Entregamos todo funcionando. Vos no tocás nada técnico.</div>
         </div>
-        <div class="metric">
+        <div class="metric fade-in fade-in-delay-1">
           <div class="metric-value">2–4 semanas</div>
           <div class="metric-label">De diagnóstico a solución</div>
           <div class="metric-desc">Implementado y funcionando en menos de un mes.</div>
         </div>
-        <div class="metric">
+        <div class="metric fade-in fade-in-delay-2">
           <div class="metric-value">Soporte incluido</div>
           <div class="metric-label">Siempre disponibles</div>
           <div class="metric-desc">Mantenimiento y ajustes para que siempre funcione.</div>
@@ -661,17 +790,21 @@
     </div>
   </section>
 
+  <hr class="gradient-sep">
+
   <!-- CTA -->
   <section id="cta">
     <div class="container">
-      <span class="badge badge--dark">Empezá hoy</span>
-      <h2>¿Tenés procesos manuales que te quitan tiempo?</h2>
-      <p>Contanos qué hace tu equipo que debería hacer una máquina.</p>
-      <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="btn btn-orange">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Agendar reunión gratuita
-      </a>
-      <p class="cta-mail">O escribinos directamente a <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a></p>
+      <span class="badge badge--dark fade-in">Empezá hoy</span>
+      <h2 class="fade-in">¿Tenés procesos manuales que te quitan tiempo?</h2>
+      <p class="fade-in">Contanos qué hace tu equipo que debería hacer una máquina.</p>
+      <div class="fade-in">
+        <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="btn btn-orange">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Agendar reunión gratuita
+        </a>
+        <p class="cta-mail">O escribinos directamente a <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a></p>
+      </div>
     </div>
   </section>
 
@@ -699,18 +832,27 @@
   </footer>
 
   <script>
-    // Mobile nav toggle
+    // ── Mobile nav toggle ──
     const toggle = document.getElementById('navToggle');
     const links  = document.getElementById('navLinks');
     toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
+      const isOpen = links.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
     });
-    // Close on link click
     links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => links.classList.remove('open'));
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.classList.remove('open');
+      });
     });
 
-    // Smooth active state on nav links
+    // ── Nav glass effect on scroll ──
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // ── Active nav link on scroll ──
     const sections = document.querySelectorAll('section[id]');
     const navAs    = document.querySelectorAll('.nav-links a:not(.nav-cta)');
     window.addEventListener('scroll', () => {
@@ -722,6 +864,88 @@
         a.style.color = a.getAttribute('href') === '#' + current ? '#fff' : '';
       });
     }, { passive: true });
+
+    // ── Intersection Observer: fade-in ──
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // ── Hero particle system ──
+    (function () {
+      const hero   = document.getElementById('hero');
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+      hero.prepend(canvas);
+      const ctx = canvas.getContext('2d');
+
+      const COUNT    = 55;
+      const MAX_DIST = 130;
+      let particles  = [];
+
+      function resize() {
+        canvas.width  = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+
+      class Particle {
+        constructor() { this.init(); }
+        init() {
+          this.x  = Math.random() * canvas.width;
+          this.y  = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.45;
+          this.vy = (Math.random() - 0.5) * 0.45;
+          this.r  = Math.random() * 1.8 + 0.8;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height)  this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(181,212,244,0.4)';
+          ctx.fill();
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx   = particles[i].x - particles[j].x;
+            const dy   = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MAX_DIST) {
+              const alpha = 0.14 * (1 - dist / MAX_DIST);
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(181,212,244,${alpha})`;
+              ctx.lineWidth   = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+      }
+
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+      for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+      animate();
+    })();
   </script>
 
 </body>
