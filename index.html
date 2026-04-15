@@ -75,6 +75,7 @@
     .btn-outline { background: rgba(255,255,255,.05); color: #fff; border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px); }
     .btn-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.35); }
 
+    /* ── Nav ── */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(1,13,26,.85);
@@ -114,6 +115,7 @@
     .nav-toggle.open span:nth-child(2) { opacity: 0; }
     .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+    /* ── Avail badge ── */
     .avail-badge {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.16);
@@ -123,6 +125,7 @@
     .avail-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: dot-pulse 1.8s ease-in-out infinite; }
     @keyframes dot-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.55);} 50%{box-shadow:0 0 0 6px rgba(34,197,94,0);} }
 
+    /* ── Hero ── */
     #hero {
       background: #010d1a;
       padding: 104px 0 96px;
@@ -148,6 +151,7 @@
     }
     #hero .btn-orange, #cta .btn-orange { animation: pulse-orange 3s ease-in-out infinite; }
 
+    /* ── Section labels (Image 1 style — orange bar) ── */
     .section-label, .it-label {
       position: relative; display: inline-block;
       font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
@@ -160,12 +164,14 @@
     }
     .section-title { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 56px; line-height: 1.2; }
 
+    /* ── Gradient separator ── */
     .gradient-sep {
       height: 1px; border: none;
       background: linear-gradient(90deg, transparent 0%, rgba(242,138,0,.18) 25%, rgba(181,212,244,.22) 50%, rgba(242,138,0,.18) 75%, transparent 100%);
       margin: 0;
     }
 
+    /* ── Cómo funciona ── */
     #como-funciona {
       background: linear-gradient(180deg, #071220 0%, #0a1829 60%, #071220 100%);
       padding: 96px 0; position: relative;
@@ -202,6 +208,7 @@
     .step h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 10px; position: relative; z-index: 1; }
     .step p { font-size: .88rem; color: var(--gris-texto); line-height: 1.7; position: relative; z-index: 1; }
 
+    /* ── Servicios ── */
     #servicios { background: linear-gradient(180deg, #050e1c 0%, #071220 100%); padding: 96px 0; position: relative; }
     #servicios::before {
       content: ''; position: absolute; bottom: 0; right: 0;
@@ -244,6 +251,7 @@
     .ejemplo-chip:hover { border-color: rgba(242,138,0,.28); color: rgba(255,255,255,.9); background: rgba(242,138,0,.06); }
     .ejemplo-chip svg { width: 14px; height: 14px; color: var(--naranja); flex-shrink: 0; }
 
+    /* ── Demos ── */
     .demos-title { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.38); text-align: center; margin-bottom: 20px; }
     .demos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .demo-card { background: linear-gradient(145deg, #050c18 0%, #070f1e 100%); border: 1px solid rgba(181,212,244,.1); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 36px rgba(0,0,0,.45); }
@@ -252,6 +260,7 @@
     .demo-header-title { font-size: .8rem; font-weight: 600; color: rgba(255,255,255,.7); }
     .demo-header-badge { margin-left: auto; font-size: .68rem; background: rgba(34,197,94,.1); color: #4ade80; border: 1px solid rgba(34,197,94,.2); border-radius: 999px; padding: 2px 8px; }
 
+    /* WhatsApp */
     .wa-body { background: #0b141a; padding: 16px; height: 260px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; position: relative; }
     .chat-bubble { max-width: 78%; padding: 9px 13px; border-radius: 8px; font-size: .79rem; line-height: 1.45; color: #e9edef; }
     .bubble-in { background: #1f2c34; border-radius: 0 8px 8px 8px; }
@@ -262,6 +271,7 @@
     .typing-dot:nth-child(2){animation-delay:.18s;} .typing-dot:nth-child(3){animation-delay:.36s;}
     @keyframes td-b { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
 
+    /* Dashboard */
     .dash-body { padding: 16px 18px; height: 260px; display: flex; flex-direction: column; gap: 11px; }
     .dash-title { font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .08em; }
     .dash-chart { display: flex; flex-direction: column; gap: 10px; flex: 1; }
@@ -278,6 +288,7 @@
     .dash-stat-val { font-size: 1.05rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, var(--naranja), var(--naranja-vivo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .dash-stat-lbl { font-size: .65rem; color: rgba(255,255,255,.38); text-transform: uppercase; letter-spacing: .06em; }
 
+    /* ── IT section ── */
     #it-section { background: linear-gradient(180deg, #010d1a 0%, #020f22 50%, #010d1a 100%); padding: 96px 0; position: relative; }
     #it-section::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(242,138,0,.05) 0%, transparent 70%); pointer-events: none; }
     #it-section h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; max-width: 640px; }
@@ -289,6 +300,7 @@
     .metric-label { font-size: .88rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
     .metric-desc { font-size: .82rem; color: var(--gris-texto); line-height: 1.55; }
 
+    /* ── CTA ── */
     #cta { background: linear-gradient(180deg, #071220 0%, #010d1a 100%); padding: 96px 0; text-align: center; position: relative; }
     #cta::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse at 50% 100%, rgba(242,138,0,.09) 0%, transparent 70%); pointer-events: none; }
     #cta h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 14px; }
@@ -297,6 +309,7 @@
     .cta-mail a { color: var(--naranja-vivo); font-weight: 600; }
     .cta-mail a:hover { text-decoration: underline; }
 
+    /* ── Footer ── */
     footer { background: rgba(1,5,12,.97); padding: 48px 0 32px; border-top: 1px solid rgba(242,138,0,.1); }
     .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; }
     .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
@@ -304,11 +317,13 @@
     .footer-links a:hover { opacity: 1; }
     .footer-copy { border-top: 1px solid rgba(181,212,244,.07); padding-top: 24px; color: rgba(181,212,244,.38); font-size: .82rem; text-align: center; }
 
+    /* ── Fade-in ── */
     .fade-in { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
     .fade-in-delay-1 { transition-delay: .12s; }
     .fade-in-delay-2 { transition-delay: .24s; }
 
+    /* ── Responsive ── */
     @media (max-width: 768px) {
       .nav-links { display: none; flex-direction: column; gap: 0; }
       .nav-links.open { display: flex; position: absolute; top: 68px; left: 0; right: 0; background: rgba(1,13,26,.97); backdrop-filter: blur(16px); border-top: 1px solid var(--border); padding: 12px 0 20px; }
@@ -383,19 +398,25 @@
       <div class="steps">
         <div class="step fade-in">
           <div class="step-num">01</div>
-          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
           <h3>Nos contás tu problema</h3>
           <p>Reunión gratuita de 30 minutos. Analizamos qué procesos manuales te están costando tiempo y plata.</p>
         </div>
         <div class="step fade-in fade-in-delay-1">
           <div class="step-num">02</div>
-          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
           <h3>Construimos la solución</h3>
           <p>Diseñamos e implementamos el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
         </div>
         <div class="step fade-in fade-in-delay-2">
           <div class="step-num">03</div>
-          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
           <h3>Funciona solo</h3>
           <p>Entregamos todo funcionando. Nos quedamos disponibles para mantenimiento y mejoras.</p>
         </div>
@@ -436,6 +457,7 @@
           </ul>
         </div>
       </div>
+
       <p class="ejemplos-label fade-in">Algunos ejemplos de lo que hemos construido</p>
       <div class="ejemplos-grid fade-in">
         <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Bot de WhatsApp con IA</span>
@@ -444,6 +466,7 @@
         <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Recordatorios de turnos y pagos</span>
         <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Reportes y dashboards automáticos</span>
       </div>
+
       <p class="demos-title fade-in">Ve cómo funciona en acción</p>
       <div class="demos-grid">
         <div class="demo-card fade-in">
@@ -467,10 +490,10 @@
           <div class="dash-body">
             <div class="dash-title">Dashboard — Semana actual</div>
             <div class="dash-chart">
-              <div class="dash-row"><span class="dash-lbl">Ventas</span><div class="dash-track"><div class="dash-fill f-orange" id="bar0"></div></div><span class="dash-val" id="bv0">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Pedidos</span><div class="dash-track"><div class="dash-fill f-blue" id="bar1"></div></div><span class="dash-val" id="bv1">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Clientes</span><div class="dash-track"><div class="dash-fill f-green" id="bar2"></div></div><span class="dash-val" id="bv2">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Facturación</span><div class="dash-track"><div class="dash-fill f-purple" id="bar3"></div></div><span class="dash-val" id="bv3">0%</span></div>
+              <div class="dash-row"><span class="dash-lbl">Ventas</span><div class="dash-track"><div class="dash-fill f-orange" id="bar0" data-val="87"></div></div><span class="dash-val" id="bv0">0%</span></div>
+              <div class="dash-row"><span class="dash-lbl">Pedidos</span><div class="dash-track"><div class="dash-fill f-blue" id="bar1" data-val="64"></div></div><span class="dash-val" id="bv1">0%</span></div>
+              <div class="dash-row"><span class="dash-lbl">Clientes</span><div class="dash-track"><div class="dash-fill f-green" id="bar2" data-val="93"></div></div><span class="dash-val" id="bv2">0%</span></div>
+              <div class="dash-row"><span class="dash-lbl">Facturación</span><div class="dash-track"><div class="dash-fill f-purple" id="bar3" data-val="71"></div></div><span class="dash-val" id="bv3">0%</span></div>
             </div>
             <div class="dash-footer">
               <div class="dash-stat"><div class="dash-stat-val" id="dOrders">0</div><div class="dash-stat-lbl">Pedidos hoy</div></div>
@@ -504,7 +527,7 @@
     <div class="container">
       <span class="badge badge--dark fade-in">Empezá hoy</span>
       <h2 class="fade-in">¿Tenés procesos manuales que te quitan tiempo?</h2>
-      <p class="fade-in">Contanos qué hace tu equipo que debería hacer una máquina.</p>
+
       <div class="fade-in">
         <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="btn btn-orange">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -538,27 +561,38 @@
   </footer>
 
   <script>
+  // ── Nav toggle ──
   const toggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => { const o = navLinks.classList.toggle('open'); toggle.classList.toggle('open', o); });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); toggle.classList.remove('open'); }));
+  toggle.addEventListener('click', () => {
+    const o = navLinks.classList.toggle('open');
+    toggle.classList.toggle('open', o);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open'); toggle.classList.remove('open');
+  }));
 
+  // ── Nav scroll ──
   const mainNav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => mainNav.classList.toggle('scrolled', scrollY > 40), { passive: true });
 
+  // ── Active link ──
   const secs = document.querySelectorAll('section[id]');
   const navAs = document.querySelectorAll('.nav-links a:not(.nav-cta)');
   window.addEventListener('scroll', () => {
-    let cur = ''; secs.forEach(s => { if (scrollY >= s.offsetTop - 110) cur = s.id; });
+    let cur = '';
+    secs.forEach(s => { if (scrollY >= s.offsetTop - 110) cur = s.id; });
     navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? '#fff' : ''; });
   }, { passive: true });
 
+  // ── Fade-in IO ──
   const fadeEls = document.querySelectorAll('.fade-in');
   const io = new IntersectionObserver(entries => entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
   }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   fadeEls.forEach(el => io.observe(el));
 
+  // ── Hero: perspective road canvas ──
   (function() {
     const hero = document.getElementById('hero');
     const cv = document.createElement('canvas');
@@ -566,106 +600,177 @@
     hero.prepend(cv);
     const ctx = cv.getContext('2d');
     let w, h, vpy;
-    function resize() { w = cv.width = hero.offsetWidth; h = cv.height = hero.offsetHeight; vpy = h * 0.58; }
+
+    function resize() {
+      w = cv.width = hero.offsetWidth;
+      h = cv.height = hero.offsetHeight;
+      vpy = h * 0.58;
+    }
+
     function draw(ts) {
       ctx.clearRect(0, 0, w, h);
-      const g1 = ctx.createRadialGradient(w*.18,h,0,w*.18,h,h*.85);
-      g1.addColorStop(0,'rgba(242,138,0,0.18)'); g1.addColorStop(1,'rgba(242,138,0,0)');
-      ctx.fillStyle=g1; ctx.fillRect(0,0,w,h);
-      const g2 = ctx.createRadialGradient(w*.82,h,0,w*.82,h,h*.9);
-      g2.addColorStop(0,'rgba(33,113,199,0.2)'); g2.addColorStop(1,'rgba(33,113,199,0)');
-      ctx.fillStyle=g2; ctx.fillRect(0,0,w,h);
-      const vpx=w/2;
-      for(let i=0;i<=14;i++){
-        const t=i/14, bx=t*w, dist=Math.abs(t-.5)*2;
-        ctx.beginPath(); ctx.moveTo(vpx,vpy); ctx.lineTo(bx,h);
-        ctx.strokeStyle=`rgba(181,212,244,${Math.max(.01,.055-dist*.025)})`;
-        ctx.lineWidth=.6; ctx.stroke();
+
+      // Ambient orange glow bottom-left (like n8n)
+      const g1 = ctx.createRadialGradient(w * 0.18, h, 0, w * 0.18, h, h * 0.85);
+      g1.addColorStop(0, 'rgba(242,138,0,0.18)'); g1.addColorStop(1, 'rgba(242,138,0,0)');
+      ctx.fillStyle = g1; ctx.fillRect(0, 0, w, h);
+
+      // Ambient blue glow bottom-right
+      const g2 = ctx.createRadialGradient(w * 0.82, h, 0, w * 0.82, h, h * 0.9);
+      g2.addColorStop(0, 'rgba(33,113,199,0.2)'); g2.addColorStop(1, 'rgba(33,113,199,0)');
+      ctx.fillStyle = g2; ctx.fillRect(0, 0, w, h);
+
+      // Perspective floor lines
+      const vpx = w / 2;
+      for (let i = 0; i <= 14; i++) {
+        const t = i / 14;
+        const bx = t * w;
+        const dist = Math.abs(t - 0.5) * 2;
+        ctx.beginPath(); ctx.moveTo(vpx, vpy); ctx.lineTo(bx, h);
+        ctx.strokeStyle = `rgba(181,212,244,${Math.max(0.01, 0.055 - dist * 0.025)})`;
+        ctx.lineWidth = 0.6; ctx.stroke();
       }
-      for(let j=1;j<=7;j++){
-        const frac=j/7, y=vpy+(h-vpy)*Math.pow(frac,.65), hw=(w/2)*frac;
-        ctx.beginPath(); ctx.moveTo(vpx-hw,y); ctx.lineTo(vpx+hw,y);
-        ctx.strokeStyle=`rgba(181,212,244,${.045*(1-frac*.5)})`;
-        ctx.lineWidth=.5; ctx.stroke();
+
+      // Horizontal distance lines
+      for (let j = 1; j <= 7; j++) {
+        const frac = j / 7;
+        const y = vpy + (h - vpy) * Math.pow(frac, 0.65);
+        const hw = (w / 2) * frac;
+        ctx.beginPath(); ctx.moveTo(vpx - hw, y); ctx.lineTo(vpx + hw, y);
+        ctx.strokeStyle = `rgba(181,212,244,${0.045 * (1 - frac * 0.5)})`;
+        ctx.lineWidth = 0.5; ctx.stroke();
       }
-      const hg=ctx.createLinearGradient(0,vpy-4,0,vpy+4);
-      hg.addColorStop(0,'transparent'); hg.addColorStop(.5,'rgba(242,138,0,0.38)'); hg.addColorStop(1,'transparent');
-      ctx.fillStyle=hg; ctx.fillRect(0,vpy-6,w,12);
-      const sweep=(ts*.00022%1), bx2=sweep*(w+240)-120;
-      const br=ctx.createRadialGradient(bx2,vpy,0,bx2,vpy,130);
-      br.addColorStop(0,'rgba(255,205,80,0.88)'); br.addColorStop(.35,'rgba(242,138,0,0.35)');
-      br.addColorStop(.75,'rgba(242,138,0,0.08)'); br.addColorStop(1,'rgba(242,138,0,0)');
-      ctx.beginPath(); ctx.ellipse(bx2,vpy,130,18,0,0,Math.PI*2); ctx.fillStyle=br; ctx.fill();
-      const vg=ctx.createRadialGradient(vpx,vpy,0,vpx,vpy,220);
-      vg.addColorStop(0,'rgba(242,138,0,0.07)'); vg.addColorStop(1,'rgba(242,138,0,0)');
-      ctx.fillStyle=vg; ctx.fillRect(0,0,w,h);
+
+      // Horizon glow line
+      const hg = ctx.createLinearGradient(0, vpy - 4, 0, vpy + 4);
+      hg.addColorStop(0, 'transparent'); hg.addColorStop(0.5, 'rgba(242,138,0,0.38)'); hg.addColorStop(1, 'transparent');
+      ctx.fillStyle = hg; ctx.fillRect(0, vpy - 6, w, 12);
+
+      // Sweeping beam on horizon
+      const sweep = (ts * 0.00022 % 1);
+      const bx = sweep * (w + 240) - 120;
+      const br = ctx.createRadialGradient(bx, vpy, 0, bx, vpy, 130);
+      br.addColorStop(0, 'rgba(255,205,80,0.88)');
+      br.addColorStop(0.35, 'rgba(242,138,0,0.35)');
+      br.addColorStop(0.75, 'rgba(242,138,0,0.08)');
+      br.addColorStop(1, 'rgba(242,138,0,0)');
+      ctx.beginPath(); ctx.ellipse(bx, vpy, 130, 18, 0, 0, Math.PI * 2);
+      ctx.fillStyle = br; ctx.fill();
+
+      // Vanishing point subtle glow
+      const vg = ctx.createRadialGradient(vpx, vpy, 0, vpx, vpy, 220);
+      vg.addColorStop(0, 'rgba(242,138,0,0.07)'); vg.addColorStop(1, 'rgba(242,138,0,0)');
+      ctx.fillStyle = vg; ctx.fillRect(0, 0, w, h);
+
       requestAnimationFrame(draw);
     }
-    resize(); window.addEventListener('resize',resize,{passive:true}); requestAnimationFrame(draw);
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    requestAnimationFrame(draw);
   })();
 
+  // ── WhatsApp Demo ──
   function initWA() {
     const container = document.getElementById('waDemo');
     const typingEl = document.getElementById('waTyping');
     const msgs = [
-      {t:'in', txt:'¿Tienen turnos disponibles mañana?'},
-      {t:'out',txt:'¡Hola! 👋 Sí, tenemos horarios. ¿A qué hora te viene bien?'},
-      {t:'in', txt:'A las 10am si es posible'},
-      {t:'out',txt:'✅ ¡Perfecto! Turno confirmado mañana 10:00am. Te mandamos recordatorio.'},
-      {t:'in', txt:'Genial, gracias! 🙌'},
-      {t:'out',txt:'¡De nada! Estamos aquí para ayudarte. Hasta mañana 👋'},
+      { t: 'in',  txt: '¿Tienen turnos disponibles mañana?' },
+      { t: 'out', txt: '¡Hola! 👋 Sí, tenemos horarios. ¿A qué hora te viene bien?' },
+      { t: 'in',  txt: 'A las 10am si es posible' },
+      { t: 'out', txt: '✅ ¡Perfecto! Turno confirmado para mañana 10:00am. Te mandamos recordatorio.' },
+      { t: 'in',  txt: 'Genial, gracias! 🙌' },
+      { t: 'out', txt: '¡De nada! Estamos aquí para ayudarte. Hasta mañana 👋' },
     ];
-    let idx=0;
-    function typing(cb,delay){typingEl.classList.add('active');setTimeout(()=>{typingEl.classList.remove('active');cb();},delay);}
-    function addBubble(msg){const el=document.createElement('div');el.className='chat-bubble bubble-'+msg.t;el.textContent=msg.txt;container.insertBefore(el,typingEl);container.scrollTop=container.scrollHeight;}
-    function next(){
-      if(idx>=msgs.length){
-        setTimeout(()=>{
-          const bs=container.querySelectorAll('.chat-bubble');
-          bs.forEach(b=>{b.style.transition='opacity .4s';b.style.opacity='0';});
-          setTimeout(()=>{bs.forEach(b=>b.remove());idx=0;setTimeout(run,600);},450);
-        },3500);return;
+    let idx = 0;
+
+    function typing(cb, delay) {
+      typingEl.classList.add('active');
+      setTimeout(() => { typingEl.classList.remove('active'); cb(); }, delay);
+    }
+
+    function addBubble(msg) {
+      const el = document.createElement('div');
+      el.className = 'chat-bubble bubble-' + msg.t;
+      el.textContent = msg.txt;
+      container.insertBefore(el, typingEl);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function next() {
+      if (idx >= msgs.length) {
+        setTimeout(() => {
+          const bs = container.querySelectorAll('.chat-bubble');
+          bs.forEach(b => { b.style.transition = 'opacity .4s'; b.style.opacity = '0'; });
+          setTimeout(() => { bs.forEach(b => b.remove()); idx = 0; setTimeout(run, 600); }, 450);
+        }, 3500);
+        return;
       }
-      const m=msgs[idx++];
-      if(m.t==='out'){typing(()=>{addBubble(m);setTimeout(next,950);},850+Math.random()*350);}
-      else{addBubble(m);setTimeout(next,1100+Math.random()*300);}
+      const m = msgs[idx++];
+      if (m.t === 'out') {
+        typing(() => { addBubble(m); setTimeout(next, 950); }, 850 + Math.random() * 350);
+      } else {
+        addBubble(m); setTimeout(next, 1100 + Math.random() * 300);
+      }
     }
-    function run(){next();} run();
+
+    function run() { next(); }
+    run();
   }
 
-  function initDash(){
-    const bars=[{fill:'bar0',val:'bv0',pct:87},{fill:'bar1',val:'bv1',pct:64},{fill:'bar2',val:'bv2',pct:93},{fill:'bar3',val:'bv3',pct:71}];
-    const stats=[{id:'dOrders',target:142,fmt:v=>String(Math.round(v))},{id:'dRevenue',target:284,fmt:v=>'$'+Math.round(v)+'k'},{id:'dClients',target:38,fmt:v=>String(Math.round(v))}];
-    function anim(){
-      bars.forEach((b,i)=>{
-        const fill=document.getElementById(b.fill),valEl=document.getElementById(b.val);
-        if(!fill||!valEl)return; fill.style.width='0%';
-        setTimeout(()=>{
-          fill.style.width=b.pct+'%';
-          let c=0;const step=b.pct/60;
-          const iv=setInterval(()=>{c=Math.min(c+step,b.pct);valEl.textContent=Math.round(c)+'%';if(c>=b.pct)clearInterval(iv);},16);
-        },i*140);
+  // ── Dashboard Demo ──
+  function initDash() {
+    const bars = [
+      { fill: 'bar0', val: 'bv0', pct: 87 },
+      { fill: 'bar1', val: 'bv1', pct: 64 },
+      { fill: 'bar2', val: 'bv2', pct: 93 },
+      { fill: 'bar3', val: 'bv3', pct: 71 },
+    ];
+    const stats = [
+      { id: 'dOrders',  target: 142, fmt: v => String(Math.round(v)) },
+      { id: 'dRevenue', target: 284, fmt: v => '$' + Math.round(v) + 'k' },
+      { id: 'dClients', target: 38,  fmt: v => String(Math.round(v)) },
+    ];
+
+    function anim() {
+      bars.forEach((b, i) => {
+        const fill = document.getElementById(b.fill);
+        const valEl = document.getElementById(b.val);
+        if (!fill || !valEl) return;
+        fill.style.width = '0%';
+        setTimeout(() => {
+          fill.style.width = b.pct + '%';
+          let c = 0; const step = b.pct / 60;
+          const iv = setInterval(() => { c = Math.min(c + step, b.pct); valEl.textContent = Math.round(c) + '%'; if (c >= b.pct) clearInterval(iv); }, 16);
+        }, i * 140);
       });
-      stats.forEach(s=>{
-        const el=document.getElementById(s.id);if(!el)return;
-        let c=0;const step=s.target/80;
-        const iv=setInterval(()=>{c=Math.min(c+step,s.target);el.textContent=s.fmt(c);if(c>=s.target)clearInterval(iv);},18);
+      stats.forEach(s => {
+        const el = document.getElementById(s.id); if (!el) return;
+        let c = 0; const step = s.target / 80;
+        const iv = setInterval(() => { c = Math.min(c + step, s.target); el.textContent = s.fmt(c); if (c >= s.target) clearInterval(iv); }, 18);
       });
     }
+
     anim();
-    setInterval(()=>{
-      bars.forEach(b=>{const f=document.getElementById(b.fill);if(f){f.style.transition='none';f.style.width='0%';}});
-      stats.forEach(s=>{const el=document.getElementById(s.id);if(el)el.textContent=s.fmt(0);});
-      setTimeout(anim,280);
-    },7500);
+    setInterval(() => {
+      bars.forEach(b => { const f = document.getElementById(b.fill); if (f) { f.style.transition = 'none'; f.style.width = '0%'; } });
+      stats.forEach(s => { const el = document.getElementById(s.id); if (el) el.textContent = s.fmt(0); });
+      setTimeout(anim, 280);
+    }, 7500);
   }
 
-  const demoSection=document.querySelector('.demos-grid');
-  let demosStarted=false;
-  const demoIO=new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting&&!demosStarted){demosStarted=true;initWA();initDash();demoIO.disconnect();}
-  },{threshold:0.2});
-  if(demoSection)demoIO.observe(demoSection);
+  // ── Trigger demos when visible ──
+  const demoSection = document.querySelector('.demos-grid');
+  let demosStarted = false;
+  const demoIO = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !demosStarted) {
+      demosStarted = true;
+      initWA();
+      initDash();
+      demoIO.disconnect();
+    }
+  }, { threshold: 0.2 });
+  if (demoSection) demoIO.observe(demoSection);
   </script>
 
 </body>
