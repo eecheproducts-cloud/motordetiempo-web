@@ -1,764 +1,1413 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Motor de Tiempo — Implementación de IA y automatizaciones para empresas</title>
-  <meta name="description" content="Implementamos IA y automatizaciones en tu empresa. Podés sumar IA con tu propio equipo, o dejarnos gestionar todo sin que necesites saber nada de tecnología." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; color: #e2e8f0; background: #010d1a; -webkit-font-smoothing: antialiased; }
-    h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; }
-    a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; display: block; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor de Tiempo — IA y automatizaciones para empresas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #08080f;
+  --bg2:     #0e0e1a;
+  --bg3:     #13131f;
+  --border:  rgba(255,255,255,0.07);
+  --fg:      #f0f0ff;
+  --fg-dim:  rgba(240,240,255,0.5);
+  --fg-muted:rgba(240,240,255,0.25);
+  --accent:  #f97316;
+  --accent2: #fb923c;
+  --violet:  #7c5cfc;
+  --violet2: #a78bfa;
+  --green:   #4ade80;
+  --glow:    rgba(249,115,22,0.35);
+  --sans:    'Space Grotesk', system-ui, sans-serif;
+  --body:    'Inter', system-ui, sans-serif;
+  --mono:    'Space Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-    :root {
-      --azul-noche:    #010d1a;
-      --azul-profundo: #020f22;
-      --azul-principal:#2171c7;
-      --azul-claro:    #B5D4F4;
-      --naranja:       #F28A00;
-      --naranja-vivo:  #ffaa33;
-      --naranja-dark:  #c46e00;
-      --gris-texto:    #94a3b8;
-      --gris-fondo:    #071220;
-      --card-bg:       #0a1829;
-      --card-bg-2:     #0d2040;
-      --border:        rgba(181,212,244,0.08);
-    }
+/* ── NOISE + GRID BG ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,15,0.8);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fg);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-icon {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  color: var(--fg-dim);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.75rem;
+  color: var(--green);
+  font-family: var(--mono);
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.2);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+  padding: 9px 20px;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 0 var(--glow);
+  position: relative; overflow: hidden;
+  animation: nav-pulse 3s 2s infinite;
+}
+.nav-cta::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 3s 1s infinite;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 24px var(--glow); }
+.nav-cta:active { transform: scale(0.96); }
+@keyframes nav-pulse {
+  0%, 80%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+  40% { box-shadow: 0 0 0 6px transparent; }
+}
 
-    .badge {
-      display: inline-block;
-      background: rgba(242,138,0,.1);
-      color: var(--naranja-vivo);
-      border: 1px solid rgba(242,138,0,.22);
-      border-radius: 999px;
-      font-size: .78rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      margin-bottom: 20px;
-    }
-    .badge--dark {
-      background: rgba(33,113,199,.12);
-      color: var(--azul-claro);
-      border-color: rgba(33,113,199,.28);
-    }
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  top: -10%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(124,92,252,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  bottom: 0; left: 20%;
+  width: 400px; height: 300px;
+  background: radial-gradient(ellipse, rgba(192,132,252,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 8px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      font-size: .95rem;
-      cursor: pointer;
-      transition: all .25s ease;
-      border: none;
-    }
-    .btn-orange {
-      background: linear-gradient(135deg, var(--naranja-dark) 0%, var(--naranja) 50%, var(--naranja-vivo) 100%);
-      color: #fff;
-      box-shadow: 0 4px 24px rgba(242,138,0,.45), 0 1px 3px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
-      border: 1px solid rgba(255,160,50,.2);
-    }
-    .btn-orange:hover { background: linear-gradient(135deg, #d97a00 0%, var(--naranja-vivo) 100%); box-shadow: 0 8px 36px rgba(242,138,0,.65), 0 2px 8px rgba(0,0,0,.3); transform: translateY(-2px); animation: none !important; }
-    .btn-outline { background: rgba(255,255,255,.05); color: #fff; border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px); }
-    .btn-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.35); }
+/* Floating nodes canvas */
+#nodes-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+}
 
-    /* ── Nav ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(1,13,26,.85);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      transition: background .35s, box-shadow .35s;
-    }
-    nav.scrolled { background: rgba(1,13,26,.96); box-shadow: 0 2px 32px rgba(0,0,0,.5); border-bottom-color: rgba(242,138,0,.1); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--naranja-dark), var(--naranja-vivo));
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 14px rgba(242,138,0,.4);
-    }
-    .logo-icon svg { width: 20px; height: 20px; }
-    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.05rem; color: #fff; letter-spacing: -.01em; }
-    .logo-text span { color: var(--naranja-vivo); }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-    .nav-links a { color: var(--azul-claro); font-size: .9rem; font-weight: 500; transition: color .15s; opacity: .8; }
-    .nav-links a:hover { color: #fff; opacity: 1; }
-    .nav-cta {
-      background: linear-gradient(135deg, var(--naranja-dark), var(--naranja)) !important;
-      color: #fff !important; padding: 9px 20px; border-radius: 7px;
-      font-weight: 700 !important; font-size: .88rem !important;
-      opacity: 1 !important;
-      box-shadow: 0 2px 12px rgba(242,138,0,.35) !important;
-      transition: all .2s !important;
-    }
-    .nav-cta:hover { box-shadow: 0 4px 22px rgba(242,138,0,.55) !important; transform: translateY(-1px); }
-    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all .25s; }
-    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hero-inner { position: relative; z-index: 1; max-width: 860px; }
 
-    /* ── Avail badge ── */
-    .avail-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.16);
-      border-radius: 999px; padding: 6px 14px 6px 10px;
-      margin-bottom: 18px; font-size: .8rem; color: rgba(255,255,255,.8); font-weight: 500;
-    }
-    .avail-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: dot-pulse 1.8s ease-in-out infinite; }
-    @keyframes dot-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.55);} 50%{box-shadow:0 0 0 6px rgba(34,197,94,0);} }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(124,92,252,0.12);
+  border: 1px solid rgba(124,92,252,0.3);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  font-family: var(--sans);
+  color: var(--accent2);
+  margin-bottom: 40px;
+  animation: fadeUp 0.7s 0.1s both;
+}
+.hero-pill span { font-size: 10px; }
 
-    /* ── Hero ── */
-    #hero {
-      background: #010d1a;
-      padding: 104px 0 96px;
-      position: relative; overflow: hidden;
-      min-height: 100vh; display: flex; align-items: center;
-    }
-    .hero-content { position: relative; z-index: 1; max-width: 720px; }
-    .hero-content h1 {
-      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
-      font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -.03em; margin-bottom: 22px;
-    }
-    .hero-content h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--naranja-dark), var(--naranja-vivo));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-content p { font-size: 1.15rem; color: var(--azul-claro); line-height: 1.75; margin-bottom: 40px; max-width: 580px; opacity: .85; }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+h1 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.2s both;
+}
+.grad {
+  background: linear-gradient(135deg, #fff 0%, var(--accent2) 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-    @keyframes pulse-orange {
-      0%,100%{box-shadow:0 4px 24px rgba(242,138,0,.45),0 0 0 0 rgba(242,138,0,.35);}
-      55%{box-shadow:0 4px 24px rgba(242,138,0,.45),0 0 0 14px rgba(242,138,0,0);}
-    }
-    #hero .btn-orange, #cta .btn-orange { animation: pulse-orange 3s ease-in-out infinite; }
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--fg-dim);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.75;
+  animation: fadeUp 0.8s 0.3s both;
+}
+.hero-actions {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  animation: fadeUp 0.8s 0.45s both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black));
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  box-shadow: 0 0 32px color-mix(in oklch, var(--accent) 50%, transparent);
+  transition: box-shadow 0.25s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 2.4s infinite;
+}
+@keyframes shimmer {
+  0% { left: -100%; }
+  60%, 100% { left: 160%; }
+}
+.btn-primary:hover { box-shadow: 0 0 52px color-mix(in oklch, var(--accent) 70%, transparent); transform: translateY(-3px) scale(1.02); }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+.btn-outline {
+  color: var(--fg-dim);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.15); color: var(--fg); }
 
-    /* ── Section labels (Image 1 style — orange bar) ── */
-    .section-label, .it-label {
-      position: relative; display: inline-block;
-      font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(255,255,255,.5); margin-bottom: 14px; padding-left: 14px;
-    }
-    .section-label::before, .it-label::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: linear-gradient(to bottom, var(--naranja-vivo), #d94000);
-      border-radius: 2px; box-shadow: 0 0 10px rgba(242,138,0,.65);
-    }
-    .section-title { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 56px; line-height: 1.2; }
+/* Stats bar */
+.hero-stats {
+  display: flex; gap: 48px; justify-content: center; align-items: center;
+  margin-top: 72px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.8s 0.6s both;
+}
+.stat-item { text-align: center; }
+.stat-value {
+  font-family: var(--sans);
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 0.78rem; color: var(--fg-muted); margin-top: 2px; }
+.stat-sep { width: 1px; height: 40px; background: var(--border); }
 
-    /* ── Gradient separator ── */
-    .gradient-sep {
-      height: 1px; border: none;
-      background: linear-gradient(90deg, transparent 0%, rgba(242,138,0,.18) 25%, rgba(181,212,244,.22) 50%, rgba(242,138,0,.18) 75%, transparent 100%);
-      margin: 0;
-    }
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(20px); }
+  to   { opacity:1; transform: translateY(0); }
+}
 
-    /* ── Cómo funciona ── */
-    #como-funciona {
-      background: linear-gradient(180deg, #071220 0%, #0a1829 60%, #071220 100%);
-      padding: 96px 0; position: relative;
-    }
-    #como-funciona::before {
-      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 700px; height: 500px;
-      background: radial-gradient(ellipse, rgba(33,113,199,.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .step {
-      background: linear-gradient(145deg, var(--card-bg-2) 0%, var(--card-bg) 100%);
-      border-radius: 16px; padding: 36px 28px;
-      border: 1px solid var(--border);
-      position: relative; overflow: hidden;
-      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
-      box-shadow: 0 4px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
-    }
-    .step:hover { transform: translateY(-7px); border-color: rgba(242,138,0,.32); box-shadow: 0 18px 52px rgba(0,0,0,.45), 0 0 28px rgba(242,138,0,.07); }
-    .step-num {
-      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 7rem; font-weight: 800;
-      color: rgba(33,113,199,.1); line-height: 1;
-      position: absolute; top: 8px; right: 16px;
-      pointer-events: none; user-select: none; letter-spacing: -.04em;
-    }
-    .step-icon {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, rgba(242,138,0,.15), rgba(242,138,0,.06));
-      border: 1px solid rgba(242,138,0,.18); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
-    }
-    .step-icon svg { width: 18px; height: 18px; color: var(--naranja-vivo); }
-    .step h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 10px; position: relative; z-index: 1; }
-    .step p { font-size: .88rem; color: var(--gris-texto); line-height: 1.7; position: relative; z-index: 1; }
+/* ── SECTION BASE ── */
+.section { padding: 100px 40px; border-top: 1px solid var(--border); position: relative; }
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: block;
+}
+#como-funciona .section-eyebrow,
+#nosotros .section-eyebrow,
+.demos-section-header .section-eyebrow { color: var(--violet2); }
+}
+h2 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+h3 { font-family: var(--sans); font-weight: 600; font-size: 1.1rem; }
 
-    /* ── Servicios ── */
-    #servicios { background: linear-gradient(180deg, #050e1c 0%, #071220 100%); padding: 96px 0; position: relative; }
-    #servicios::before {
-      content: ''; position: absolute; bottom: 0; right: 0;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(242,138,0,.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .servicios-intro { max-width: 640px; margin: 0 auto 56px; text-align: center; }
-    .servicios-intro p { font-size: 1.05rem; color: var(--gris-texto); line-height: 1.8; }
-    .modelos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 56px; }
-    .modelos-grid--single { grid-template-columns: minmax(0, 560px); justify-content: center; }
-    .modelo-card {
-      border-radius: 16px; padding: 36px 32px;
-      display: flex; flex-direction: column; gap: 16px;
-      transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
-    }
-    .modelo-card:hover { transform: translateY(-7px); border-color: rgba(242,138,0,.28); box-shadow: 0 22px 60px rgba(0,0,0,.45), 0 0 30px rgba(242,138,0,.09); }
-    .modelo-card.gestionado { background: linear-gradient(145deg, #0d2040 0%, #0a1829 100%); }
-    .modelo-tag { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 4px 12px; width: fit-content; }
-    .gestionado .modelo-tag { background: rgba(242,138,0,.12); color: var(--naranja-vivo); border: 1px solid rgba(242,138,0,.24); }
-    .modelo-card h3 { font-size: 1.2rem; font-weight: 800; line-height: 1.3; letter-spacing: -.01em; color: #fff; }
-    .modelo-card .modelo-desc { font-size: .9rem; line-height: 1.75; color: var(--gris-texto); }
-    .modelo-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
-    .modelo-bullets li { font-size: .86rem; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; color: rgba(255,255,255,.72); }
-    .modelo-bullets li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
-    .gestionado .modelo-bullets li::before { background: var(--naranja-vivo); box-shadow: 0 0 7px rgba(242,138,0,.55); }
-    .ejemplos-label { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.38); text-align: center; margin-bottom: 20px; }
-    .ejemplos-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 64px; }
-    .ejemplo-chip {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(181,212,244,.05); border: 1px solid rgba(181,212,244,.1);
-      border-radius: 999px; padding: 8px 16px;
-      font-size: .84rem; color: rgba(255,255,255,.6); font-weight: 500;
-      transition: border-color .2s, color .2s, background .2s;
-    }
-    .ejemplo-chip:hover { border-color: rgba(242,138,0,.28); color: rgba(255,255,255,.9); background: rgba(242,138,0,.06); }
-    .ejemplo-chip svg { width: 14px; height: 14px; color: var(--naranja); flex-shrink: 0; }
+/* ── STEPS ── */
+.steps-header { text-align: center; margin-bottom: 80px; }
+.steps-header h2 { max-width: 560px; margin: 0 auto; }
+.steps-header p { color: var(--fg-dim); margin-top: 16px; }
 
-    /* ── Demos ── */
-    .demos-title { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.38); text-align: center; margin-bottom: 20px; }
-    .demos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .demo-card { background: linear-gradient(145deg, #050c18 0%, #070f1e 100%); border: 1px solid rgba(181,212,244,.1); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 36px rgba(0,0,0,.45); }
-    .demo-header { background: linear-gradient(90deg, rgba(242,138,0,.1), rgba(33,113,199,.07)); border-bottom: 1px solid rgba(181,212,244,.08); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-    .demo-header-dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--naranja-dark), var(--naranja-vivo)); box-shadow: 0 0 8px rgba(242,138,0,.55); }
-    .demo-header-title { font-size: .8rem; font-weight: 600; color: rgba(255,255,255,.7); }
-    .demo-header-badge { margin-left: auto; font-size: .68rem; background: rgba(34,197,94,.1); color: #4ade80; border: 1px solid rgba(34,197,94,.2); border-radius: 999px; padding: 2px 8px; }
+.steps-flow {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  max-width: 1100px; margin: 0 auto;
+}
+.step-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.step-card:hover { border-color: rgba(124,92,252,0.35); transform: translateY(-4px); }
+.step-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(124,92,252,0.06) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.step-card:hover::before { opacity: 1; }
+.step-num-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: rgba(124,92,252,0.15);
+  border: 1px solid rgba(124,92,252,0.3);
+  border-radius: 9px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent2);
+  margin-bottom: 24px;
+}
+.step-card h3 { margin-bottom: 12px; font-size: 1.15rem; }
+.step-card p { color: var(--fg-dim); font-size: 0.9rem; line-height: 1.7; }
+.step-connector {
+  position: absolute; top: 50%; right: -18px;
+  transform: translateY(-50%);
+  width: 36px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  z-index: 2;
+}
+.step-card:last-child .step-connector { display: none; }
 
-    /* WhatsApp */
-    .wa-body { background: #0b141a; padding: 16px; height: 260px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; position: relative; }
-    .chat-bubble { max-width: 78%; padding: 9px 13px; border-radius: 8px; font-size: .79rem; line-height: 1.45; color: #e9edef; }
-    .bubble-in { background: #1f2c34; border-radius: 0 8px 8px 8px; }
-    .bubble-out { background: linear-gradient(135deg, #0d5c3a, #0a7048); border-radius: 8px 0 8px 8px; align-self: flex-end; margin-left: auto; }
-    .typing-ind { display: none; align-items: center; gap: 4px; padding: 8px 12px; background: #1f2c34; border-radius: 0 8px 8px 8px; width: fit-content; }
-    .typing-ind.active { display: flex; }
-    .typing-dot { width: 5px; height: 5px; background: #8696a0; border-radius: 50%; animation: td-b .9s ease-in-out infinite; }
-    .typing-dot:nth-child(2){animation-delay:.18s;} .typing-dot:nth-child(3){animation-delay:.36s;}
-    @keyframes td-b { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+/* ── SERVICES ── */
+.services-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+  max-width: 1100px; margin: 0 auto 64px;
+}
+.services-intro p { color: var(--fg-dim); line-height: 1.8; padding-top: 8px; }
+.examples-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; max-width: 1100px; margin: 0 auto;
+}
+.ex-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 28px 32px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative; overflow: hidden;
+}
+.ex-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-2px); }
+.ex-card-top {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.ex-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.ex-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ex-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.ex-card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.65; }
 
-    /* Dashboard */
-    .dash-body { padding: 16px 18px; height: 260px; display: flex; flex-direction: column; gap: 11px; }
-    .dash-title { font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .08em; }
-    .dash-chart { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .dash-row { display: flex; align-items: center; gap: 10px; }
-    .dash-lbl { font-size: .74rem; color: rgba(255,255,255,.5); width: 68px; flex-shrink: 0; }
-    .dash-track { flex: 1; height: 7px; background: rgba(255,255,255,.07); border-radius: 999px; overflow: hidden; }
-    .dash-fill { height: 100%; border-radius: 999px; width: 0%; transition: width 1.3s cubic-bezier(.25,.46,.45,.94); }
-    .f-orange { background: linear-gradient(90deg, var(--naranja-dark), var(--naranja-vivo)); }
-    .f-blue { background: linear-gradient(90deg, #1565c0, #64b5f6); }
-    .f-green { background: linear-gradient(90deg, #166534, #4ade80); }
-    .f-purple { background: linear-gradient(90deg, #6b21a8, #c084fc); }
-    .dash-val { font-size: .74rem; font-weight: 600; color: rgba(255,255,255,.65); width: 30px; text-align: right; flex-shrink: 0; }
-    .dash-footer { display: flex; align-items: center; justify-content: space-around; padding-top: 10px; border-top: 1px solid rgba(181,212,244,.07); margin-top: auto; }
-    .dash-stat-val { font-size: 1.05rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, var(--naranja), var(--naranja-vivo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .dash-stat-lbl { font-size: .65rem; color: rgba(255,255,255,.38); text-transform: uppercase; letter-spacing: .06em; }
+/* ── PROPS ── */
+.props-section { background: var(--bg2); }
+.props-inner { max-width: 1100px; margin: 0 auto; }
+.props-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 64px;
+}
+.props-header p { color: var(--fg-dim); line-height: 1.8; }
+.props-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.prop-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s;
+}
+.prop-card:hover { border-color: rgba(124,92,252,0.35); }
+.prop-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0; transition: opacity 0.3s;
+}
+.prop-card:hover::after { opacity: 1; }
+.prop-value {
+  font-family: var(--sans);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #fff, var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.prop-card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+.prop-card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.6; }
 
-    /* ── IT section ── */
-    #it-section { background: linear-gradient(180deg, #010d1a 0%, #020f22 50%, #010d1a 100%); padding: 96px 0; position: relative; }
-    #it-section::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(242,138,0,.05) 0%, transparent 70%); pointer-events: none; }
-    #it-section h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 16px; max-width: 640px; }
-    #it-section .it-sub { color: var(--gris-texto); font-size: 1rem; line-height: 1.8; max-width: 560px; margin-bottom: 60px; }
-    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-    .metric { border-top: 2px solid rgba(242,138,0,.18); padding-top: 24px; position: relative; }
-    .metric::before { content: ''; position: absolute; top: -2px; left: 0; width: 48px; height: 2px; background: linear-gradient(90deg, var(--naranja-vivo), transparent); }
-    .metric-value { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.55rem; font-weight: 800; background: linear-gradient(135deg, var(--naranja), var(--naranja-vivo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
-    .metric-label { font-size: .88rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .metric-desc { font-size: .82rem; color: var(--gris-texto); line-height: 1.55; }
+/* ── CTA ── */
+.cta-section {
+  text-align: center;
+  padding: 120px 40px;
+  border-top: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(124,92,252,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
+.cta-inner h2 { margin-bottom: 20px; }
+.cta-inner p { color: var(--fg-dim); margin-bottom: 44px; font-size: 1rem; }
+.cta-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.cta-email {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-family: var(--mono);
+  transition: color 0.2s;
+}
+.cta-email:hover { color: var(--accent2); }
 
-    /* ── CTA ── */
-    #cta { background: linear-gradient(180deg, #071220 0%, #010d1a 100%); padding: 96px 0; text-align: center; position: relative; }
-    #cta::before { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse at 50% 100%, rgba(242,138,0,.09) 0%, transparent 70%); pointer-events: none; }
-    #cta h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 14px; }
-    #cta p { font-size: 1rem; color: var(--gris-texto); margin-bottom: 36px; }
-    .cta-mail { display: block; margin-top: 18px; font-size: .9rem; color: var(--gris-texto); }
-    .cta-mail a { color: var(--naranja-vivo); font-weight: 600; }
-    .cta-mail a:hover { text-decoration: underline; }
+/* ── FOOTER ── */
+footer {
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: var(--sans); font-weight: 700;
+  font-size: 0.9rem; color: var(--fg-dim); text-decoration: none;
+}
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { color: var(--fg-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--fg-dim); }
+.footer-copy { font-size: 0.75rem; color: var(--fg-muted); font-family: var(--mono); }
 
-    /* ── Footer ── */
-    footer { background: rgba(1,5,12,.97); padding: 48px 0 32px; border-top: 1px solid rgba(242,138,0,.1); }
-    .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; }
-    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
-    .footer-links a { color: var(--azul-claro); font-size: .88rem; opacity: .55; transition: opacity .15s; }
-    .footer-links a:hover { opacity: 1; }
-    .footer-copy { border-top: 1px solid rgba(181,212,244,.07); padding-top: 24px; color: rgba(181,212,244,.38); font-size: .82rem; text-align: center; }
+/* ── SCROLL REVEAL ── */
+.reveal { opacity:0; transform: translateY(28px); transition: opacity 0.75s, transform 0.75s; }
+.reveal.visible { opacity:1; transform:none; }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
 
-    /* ── Fade-in ── */
-    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-    .fade-in-delay-1 { transition-delay: .12s; }
-    .fade-in-delay-2 { transition-delay: .24s; }
+/* ── TWEAKS ── */
+#tweaks-panel {
+  display: none; position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: #12121e; border: 1px solid rgba(124,92,252,0.3);
+  border-radius: 14px; padding: 20px; width: 230px;
+  font-size: 0.8rem; box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 32px rgba(124,92,252,0.1);
+  font-family: var(--sans);
+}
+#tweaks-panel h4 {
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted); margin-bottom: 16px; font-family: var(--mono);
+}
+.tw-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.tw-row label { color: var(--fg-dim); font-size: 0.8rem; }
+.tw-row input[type=color] { width: 28px; height: 22px; border: none; background: none; cursor: pointer; border-radius: 4px; }
+.tw-row select {
+  background: #0e0e1a; border: 1px solid rgba(255,255,255,0.1); color: var(--fg);
+  font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-family: var(--sans);
+}
 
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; flex-direction: column; gap: 0; }
-      .nav-links.open { display: flex; position: absolute; top: 68px; left: 0; right: 0; background: rgba(1,13,26,.97); backdrop-filter: blur(16px); border-top: 1px solid var(--border); padding: 12px 0 20px; }
-      .nav-links li { width: 100%; }
-      .nav-links a { display: block; padding: 12px 24px; }
-      .nav-cta { margin: 8px 24px 0; display: block; text-align: center; }
-      .nav-toggle { display: flex; }
-      nav { position: relative; }
-      .steps { grid-template-columns: 1fr; gap: 18px; }
-      .modelos-grid { grid-template-columns: 1fr; }
-      .modelo-card { padding: 28px 24px; }
-      .demos-grid { grid-template-columns: 1fr; }
-      .metrics { grid-template-columns: 1fr; gap: 24px; }
-      .hero-btns { flex-direction: column; }
-      .btn { justify-content: center; }
-      .footer-inner { flex-direction: column; gap: 20px; }
-      #hero { min-height: auto; padding: 80px 0 72px; align-items: flex-start; }
-    }
-    @media (max-width: 480px) {
-      #como-funciona, #servicios, #it-section, #cta { padding: 72px 0; }
-    }
-  </style>
+/* ── SERVICE CARDS ── */
+.service-cards {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 16px; max-width: 1100px; margin: 48px auto 48px;
+}
+.service-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+  display: flex; flex-direction: column; gap: 20px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative; overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0; transition: opacity 0.3s;
+}
+.service-card:hover { border-color: rgba(249,115,22,0.3); transform: translateY(-3px); }
+.service-card:hover::before { opacity: 1; }
+.service-card-top { display: flex; align-items: center; gap: 16px; }
+.service-icon {
+  font-size: 2rem;
+  width: 56px; height: 56px;
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.service-tag {
+  font-family: var(--sans); font-weight: 700; font-size: 1.2rem;
+  color: var(--fg);
+}
+.service-tagline {
+  font-family: var(--mono); font-size: 0.72rem;
+  color: var(--accent); letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+.service-desc {
+  color: var(--fg-dim); font-size: 0.9rem; line-height: 1.75;
+}
+.service-list {
+  list-style: none; display: flex; flex-direction: column; gap: 10px;
+  flex: 1;
+}
+.service-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.875rem; color: rgba(240,240,255,0.75);
+}
+.service-list li::before {
+  content: '✓';
+  color: var(--accent);
+  font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.service-cta {
+  display: inline-flex; align-items: center;
+  background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black));
+  color: #fff;
+  font-family: var(--sans); font-weight: 600; font-size: 0.85rem;
+  text-decoration: none;
+  padding: 11px 22px; border-radius: 8px;
+  align-self: flex-start;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 0 20px color-mix(in oklch, var(--accent) 40%, transparent);
+}
+.service-cta:hover { opacity: 0.88; transform: translateX(2px); }
+
+/* ── DEMOS ── */
+.demos-grid {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 16px; max-width: 1100px; margin: 16px auto 0;
+}
+.demo-card {
+  background: #0e0e1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 24px 24px 20px;
+  overflow: hidden;
+}
+.demo-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.demo-badge {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.demo-badge.live   { background: rgba(74,222,128,0.12); color:#4ade80; border:1px solid rgba(74,222,128,0.3); }
+.demo-badge.auto   { background: rgba(96,165,250,0.1);  color:#60a5fa; border:1px solid rgba(96,165,250,0.25); }
+.demo-badge.processing { background:rgba(251,191,36,0.1); color:#fbbf24; border:1px solid rgba(251,191,36,0.25); }
+.demo-title {
+  font-family: var(--sans); font-weight: 600; font-size: 1rem;
+  color: var(--fg); margin-bottom: 4px;
+}
+.demo-subtitle {
+  font-size: 0.82rem; color: var(--fg-dim); line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+/* ─ WhatsApp ─ */
+.wa-phone {
+  background: #111827;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.wa-topbar {
+  background: #1e2535;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.wa-avatar {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; font-family: var(--sans);
+  color: #fff; flex-shrink: 0;
+}
+.wa-name  { font-size: 0.9rem; font-weight: 600; font-family: var(--sans); color: var(--fg); }
+.wa-status{ font-size: 0.72rem; color: #4ade80; margin-top: 1px; }
+.wa-messages {
+  padding: 16px; min-height: 180px; max-height: 180px;
+  overflow: hidden;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.wa-msg {
+  max-width: 80%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  animation: msgIn 0.25s ease both;
+}
+.wa-msg.user {
+  background: rgba(249,115,22,0.25);
+  border: 1px solid rgba(249,115,22,0.3);
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+  color: #fff;
+}
+.wa-msg.bot {
+  background: #1e2535;
+  border: 1px solid rgba(255,255,255,0.08);
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+  color: rgba(240,240,255,0.85);
+}
+.wa-typing {
+  display: flex; gap: 5px; align-items: center;
+  align-self: flex-start;
+  background: #1e2535;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border-bottom-left-radius: 3px;
+}
+.wa-typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  animation: typing 1.2s infinite;
+}
+.wa-typing span:nth-child(2){animation-delay:.2s}
+.wa-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wa-input-row {
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; gap: 10px; align-items: center;
+}
+.wa-input {
+  flex: 1;
+  background: #1e2535;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--body);
+}
+.wa-send {
+  width: 32px; height: 32px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; color: #fff; cursor: default;
+  flex-shrink: 0;
+}
+
+/* ─ Dashboard ─ */
+.dash-inner { display: flex; flex-direction: column; gap: 14px; }
+.dash-title { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; color: var(--fg); }
+.dash-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.dash-kpi {
+  background: #13131f;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 14px 12px;
+}
+.dash-kpi-val   { font-family: var(--sans); font-weight: 700; font-size: 1.5rem; color: var(--fg); }
+.dash-kpi-label { font-size: 0.7rem; color: var(--fg-muted); margin-top: 2px; line-height:1.3; }
+.dash-metrics { display: flex; flex-direction: column; gap: 10px; }
+.dash-metric { display: grid; grid-template-columns: 90px 1fr 40px; align-items: center; gap: 10px; }
+.dash-metric-label { font-size: 0.78rem; color: rgba(240,240,255,0.6); font-family: var(--sans); }
+.dash-metric-bar { height: 7px; background: rgba(255,255,255,0.07); border-radius: 999px; overflow: hidden; }
+.dash-bar-fill { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+.dash-metric-val { font-size: 0.78rem; font-family: var(--mono); color: rgba(240,240,255,0.65); text-align:right; }
+
+/* ─ Facturas ─ */
+.fact-demo {
+  display: grid; grid-template-columns: 1fr 24px 1fr; gap: 8px; align-items: start;
+}
+.fact-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding-top: 36px; color: var(--accent); font-size: 1.1rem; font-weight: 700;
+}
+.fact-inbox-label { font-size: 0.78rem; color: rgba(240,240,255,0.5); margin-bottom: 10px; font-family: var(--sans); }
+.fact-list { display: flex; flex-direction: column; gap: 6px; min-height: 140px; }
+.fact-item {
+  background: #13131f;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.78rem;
+  font-family: var(--mono);
+  color: rgba(240,240,255,0.7);
+  animation: msgIn 0.3s ease both;
+  display: flex; align-items: center; gap: 8px;
+}
+.fact-item.done {
+  border-color: rgba(74,222,128,0.2);
+  background: rgba(74,222,128,0.05);
+  color: rgba(240,240,255,0.85);
+}
+.fact-item .fi-icon { font-size: 0.9rem; flex-shrink:0; }
+
+/* ─ Pedidos ─ */
+.pedidos-demo { }
+.pedidos-header-row {
+  display: grid; grid-template-columns: 80px 1fr 90px;
+  gap: 10px; padding: 6px 12px;
+  margin-bottom: 6px;
+}
+.pedido-row {
+  display: grid; grid-template-columns: 80px 1fr 90px;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #13131f;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 9px;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+  animation: msgIn 0.3s ease both;
+}
+.pedido-origin {
+  display: flex; align-items: center; gap: 6px;
+  color: rgba(240,240,255,0.55);
+  font-family: var(--mono); font-size: 0.72rem;
+}
+.pedido-product { color: var(--fg); font-family: var(--sans); font-size: 0.82rem; }
+.pedido-status {
+  font-family: var(--mono); font-size: 0.7rem;
+  padding: 3px 8px; border-radius: 999px;
+  text-align: center; align-self: center;
+}
+.pedido-status.ok  { background:rgba(74,222,128,0.12); color:#4ade80; border:1px solid rgba(74,222,128,0.25); }
+.pedido-status.new { background:rgba(249,115,22,0.12); color:#f97316; border:1px solid rgba(249,115,22,0.25); animation: newPulse 1s ease both; }
+@keyframes newPulse{0%{box-shadow:0 0 0 0 rgba(249,115,22,0.4)}100%{box-shadow:0 0 0 6px transparent}}
+
+.demos-section-label {
+  display: flex; align-items: center; gap: 20px;
+  max-width: 100%; margin: 48px 0 24px;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.demos-section-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.35;
+}
+
+.demos-section-header {
+  max-width: 1100px; margin: 72px auto 40px;
+  padding-top: 56px;
+  border-top: 1px solid var(--border);
+}
+.demos-section-header h2 { margin-bottom: 12px; }
+.demos-section-header p { color: var(--fg-dim); font-size: 1rem; max-width: 480px; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-badge { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .section { padding: 72px 20px; }
+  .steps-flow { grid-template-columns: 1fr; gap: 12px; }
+  .step-connector { display: none !important; }
+  .services-intro, .props-header { grid-template-columns: 1fr; gap: 24px; }
+  .examples-grid, .props-grid, .demos-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  .stat-sep { display: none; }
+  footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 20px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+</style>
 </head>
 <body>
 
-  <nav id="mainNav">
-    <div class="container nav-inner">
-      <a href="#" class="logo">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-          </svg>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    Motor de Tiempo
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Soluciones</a></li>
+    <li><a href="academy.html">Motor Academy</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-badge"><span class="dot"></span>Disponible</div>
+    <a href="https://calendly.com/hola-motordetiempo/30min" class="nav-cta" target="_blank">Agendar reunión</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <canvas id="nodes-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-pill">
+      <span>✦</span> Implementación de IA y automatizaciones para empresas
+    </div>
+    <h1>Tu equipo trabaja en<br>lo que importa.<br><span class="grad">Nosotros automatizamos<br>el resto.</span></h1>
+    <p class="hero-sub">Eliminamos los procesos manuales de tu empresa usando inteligencia artificial. Sin que necesites contratar un equipo de IT.</p>
+    <div class="hero-actions">
+      <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank">Agendar reunión gratuita →</a>
+      <a href="#como-funciona" class="btn-outline">Ver cómo funciona</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value" data-count="0">0</div>
+        <div class="stat-label">Fricción técnica</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <div class="stat-value">2–4</div>
+        <div class="stat-label">Semanas de implementación</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Soporte incluido</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona" class="section">
+  <div class="steps-header">
+    <span class="section-eyebrow reveal">// proceso</span>
+    <h2 class="reveal">Tres pasos, sin complicaciones.</h2>
+  </div>
+  <div class="steps-flow">
+    <div class="step-card reveal reveal-d1">
+      <div class="step-connector"></div>
+      <div class="step-num-badge">01</div>
+      <h3>Nos contás tu problema</h3>
+      <p>Reunión gratuita de 30 minutos. Analizamos qué procesos manuales te están costando tiempo y plata.</p>
+    </div>
+    <div class="step-card reveal reveal-d2">
+      <div class="step-connector"></div>
+      <div class="step-num-badge">02</div>
+      <h3>Construimos la solución</h3>
+      <p>Diseñamos e implementamos el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
+    </div>
+    <div class="step-card reveal reveal-d3">
+      <div class="step-num-badge">03</div>
+      <h3>Funciona solo</h3>
+      <p>Entregamos todo funcionando. Nos quedamos disponibles para mantenimiento y mejoras continuas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="servicios" class="section">
+  <div class="services-intro">
+    <div>
+      <span class="section-eyebrow reveal">// servicios</span>
+      <h2 class="reveal">Elegí cómo trabajar<br>con nosotros.</h2>
+    </div>
+    <p class="reveal" style="padding-top:48px;">No vendemos herramientas ni paquetes cerrados. Nos sentamos con vos, entendemos cómo trabaja tu empresa, y diseñamos algo que se adapta exactamente a ese problema.</p>
+  </div>
+
+  <!-- SERVICE CARDS -->
+  <div class="service-cards">
+    <div class="service-card reveal reveal-d1">
+      <div class="service-card-top">
+        <div class="service-icon">🔑</div>
+        <div>
+          <div class="service-tag">Motor Key</div>
+          <div class="service-tagline">Vos no tocás nada</div>
         </div>
-        <span class="logo-text">Motor de <span>Tiempo</span></span>
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#como-funciona">Cómo funciona</a></li>
-        <li><a href="#it-section">Nosotros</a></li>
-        <li><a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="nav-cta">Agendar reunión</a></li>
+      </div>
+      <p class="service-desc">Implementamos y operamos la automatización por vos. Ideal para comercios, consultorios y distribuidoras sin equipo IT. Solo describís el problema — nosotros hacemos el resto.</p>
+      <ul class="service-list">
+        <li>Bot de WhatsApp con menú automatizado</li>
+        <li>Procesador de facturas y pedidos</li>
+        <li>Recordatorios de turnos y pagos</li>
+        <li>Mantenimiento y soporte continuo</li>
       </ul>
-      <button class="nav-toggle" id="navToggle" aria-label="Menú">
-        <span></span><span></span><span></span>
-      </button>
+      <a href="https://calendly.com/hola-motordetiempo/30min" class="service-cta" target="_blank">Consultá tu caso →</a>
     </div>
-  </nav>
-
-  <section id="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="avail-badge"><span class="avail-dot"></span>Disponible para nuevos proyectos</div>
-        <span class="badge">Implementación de IA y automatizaciones para empresas</span>
-        <h1>Tu equipo trabaja en lo que importa.<br><em>Nosotros automatizamos el resto.</em></h1>
-        <p>Eliminamos los procesos manuales de tu empresa usando inteligencia artificial. Sin que necesites contratar un equipo de IT.</p>
-        <div class="hero-btns">
-          <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="btn btn-orange">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            Agendar reunión gratuita
-          </a>
-          <a href="#como-funciona" class="btn btn-outline">Ver cómo funciona</a>
+    <div class="service-card reveal reveal-d2">
+      <div class="service-card-top">
+        <div class="service-icon">🔧</div>
+        <div>
+          <div class="service-tag">Motor Build</div>
+          <div class="service-tagline">Lo construimos juntos</div>
         </div>
       </div>
+      <p class="service-desc">Tenés un problema específico que ningún producto estándar resuelve. Trabajamos con tu equipo para diseñar e implementar la solución a medida con IA.</p>
+      <ul class="service-list">
+        <li>Diagnóstico del proceso actual</li>
+        <li>Diseño de solución personalizada con IA</li>
+        <li>Implementación, pruebas y entrega</li>
+        <li>Documentación del sistema</li>
+        <li>Retainer mensual opcional para seguir creciendo</li>
+      </ul>
+      <a href="https://calendly.com/hola-motordetiempo/30min" class="service-cta" target="_blank">Consultá tu caso →</a>
     </div>
-  </section>
+  </div>
+  <!-- DEMOS -->
+  <div class="demos-section-header reveal">
+    <span class="section-eyebrow">// en acción</span>
+    <h2>Ve cómo funciona<br><span class="grad">en tiempo real.</span></h2>
+    <p>Estos son algunos ejemplos de lo que construimos — corriendo en vivo.</p>
+  </div>
+  <div class="demos-grid">
 
-  <hr class="gradient-sep">
-
-  <section id="como-funciona">
-    <div class="container">
-      <p class="section-label fade-in">Cómo funciona</p>
-      <h2 class="section-title fade-in">Tres pasos, sin complicaciones</h2>
-      <div class="steps">
-        <div class="step fade-in">
-          <div class="step-num">01</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <!-- WhatsApp Demo -->
+    <div class="demo-card reveal reveal-d1">
+      <div class="demo-header">
+        <div class="demo-badge live">● En vivo</div>
+        <span class="ex-tag" style="color:var(--fg-dim);font-size:0.78rem;font-family:var(--sans);">WhatsApp · IA</span>
+      </div>
+      <div class="demo-title">Bot de atención automatizada</div>
+      <div class="demo-subtitle">Respondé consultas y agendá turnos sin intervención humana, las 24hs.</div>
+      <div class="wa-phone">
+        <div class="wa-topbar">
+          <div class="wa-avatar">MT</div>
+          <div>
+            <div class="wa-name">Motor de Tiempo Bot</div>
+            <div class="wa-status">● en línea</div>
           </div>
-          <h3>Nos contás tu problema</h3>
-          <p>Reunión gratuita de 30 minutos. Analizamos qué procesos manuales te están costando tiempo y plata.</p>
         </div>
-        <div class="step fade-in fade-in-delay-1">
-          <div class="step-num">02</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          </div>
-          <h3>Construimos la solución</h3>
-          <p>Diseñamos e implementamos el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
-        </div>
-        <div class="step fade-in fade-in-delay-2">
-          <div class="step-num">03</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <h3>Funciona solo</h3>
-          <p>Entregamos todo funcionando. Nos quedamos disponibles para mantenimiento y mejoras.</p>
+        <div class="wa-messages" id="wa-messages"></div>
+        <div class="wa-input-row">
+          <div class="wa-input">Escribí un mensaje...</div>
+          <div class="wa-send">↑</div>
         </div>
       </div>
     </div>
-  </section>
 
-  <hr class="gradient-sep">
-
-  <section id="servicios">
-    <div class="container">
-      <p class="section-label fade-in">Servicios</p>
-      <h2 class="section-title fade-in">Escuchamos el problema.<br>Construimos la solución.</h2>
-      <div class="servicios-intro fade-in">
-        <p>No vendemos herramientas ni paquetes cerrados. Nos sentamos con vos, entendemos cómo trabaja tu empresa, y diseñamos algo que se adapta exactamente a ese problema. Cada solución es distinta porque cada empresa es distinta.</p>
+    <!-- Dashboard Demo -->
+    <div class="demo-card reveal reveal-d2">
+      <div class="demo-header">
+        <div class="demo-badge auto">↻ Auto</div>
+        <span class="ex-tag" style="color:var(--fg-dim);font-size:0.78rem;font-family:var(--sans);">Reportes</span>
       </div>
-      <div class="modelos-grid modelos-grid--single">
-        <div class="modelo-card gestionado fade-in">
-          <span class="modelo-tag">Servicio gestionado</span>
-          <h3>Nos encargamos de todo. Vos solo ves el resultado.</h3>
-          <p class="modelo-desc">Ideal para empresas que no quieren saber nada de tecnología. Construimos, implementamos y mantenemos todo. El cliente no toca ningún sistema.</p>
-          <ul class="modelo-bullets">
-            <li>Sin necesidad de equipo técnico propio</li>
-            <li>Herramientas configuradas y monitoreadas por nosotros</li>
-            <li>Soporte continuo incluido</li>
-            <li>Listo en 2 a 4 semanas</li>
-          </ul>
-        </div>
-      </div>
-
-      <p class="ejemplos-label fade-in">Algunos ejemplos de lo que hemos construido</p>
-      <div class="ejemplos-grid fade-in">
-        <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Bot de WhatsApp con IA</span>
-        <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Procesamiento automático de facturas</span>
-        <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Carga automática de pedidos</span>
-        <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Recordatorios de turnos y pagos</span>
-        <span class="ejemplo-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Reportes y dashboards automáticos</span>
-      </div>
-
-      <p class="demos-title fade-in">Ve cómo funciona en acción</p>
-      <div class="demos-grid">
-        <div class="demo-card fade-in">
-          <div class="demo-header">
-            <div class="demo-header-dot"></div>
-            <span class="demo-header-title">Bot de WhatsApp con IA</span>
-            <span class="demo-header-badge">● En vivo</span>
+      <div class="demo-title">Dashboards y reportes automáticos</div>
+      <div class="demo-subtitle">Métricas clave actualizadas en tiempo real, sin armar nada a mano.</div>
+      <div class="dash-inner">
+        <div class="dash-title">Dashboard — Semana actual</div>
+        <div class="dash-kpis">
+          <div class="dash-kpi">
+            <div class="dash-kpi-val" id="kpi-pedidos">0</div>
+            <div class="dash-kpi-label">Pedidos hoy</div>
           </div>
-          <div class="wa-body" id="waDemo">
-            <div class="typing-ind" id="waTyping">
-              <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-            </div>
+          <div class="dash-kpi">
+            <div class="dash-kpi-val" id="kpi-fact">$0k</div>
+            <div class="dash-kpi-label">Facturación</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="dash-kpi-val" id="kpi-cli">0</div>
+            <div class="dash-kpi-label">Clientes nuevos</div>
           </div>
         </div>
-        <div class="demo-card fade-in fade-in-delay-1">
-          <div class="demo-header">
-            <div class="demo-header-dot"></div>
-            <span class="demo-header-title">Reportes y dashboards automáticos</span>
-            <span class="demo-header-badge">↻ Auto</span>
+        <div class="dash-metrics">
+          <div class="dash-metric">
+            <div class="dash-metric-label">Ventas</div>
+            <div class="dash-metric-bar"><div class="dash-bar-fill" id="bar-ventas"></div></div>
+            <div class="dash-metric-val" id="val-ventas">0%</div>
           </div>
-          <div class="dash-body">
-            <div class="dash-title">Dashboard — Semana actual</div>
-            <div class="dash-chart">
-              <div class="dash-row"><span class="dash-lbl">Ventas</span><div class="dash-track"><div class="dash-fill f-orange" id="bar0" data-val="87"></div></div><span class="dash-val" id="bv0">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Pedidos</span><div class="dash-track"><div class="dash-fill f-blue" id="bar1" data-val="64"></div></div><span class="dash-val" id="bv1">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Clientes</span><div class="dash-track"><div class="dash-fill f-green" id="bar2" data-val="93"></div></div><span class="dash-val" id="bv2">0%</span></div>
-              <div class="dash-row"><span class="dash-lbl">Facturación</span><div class="dash-track"><div class="dash-fill f-purple" id="bar3" data-val="71"></div></div><span class="dash-val" id="bv3">0%</span></div>
-            </div>
-            <div class="dash-footer">
-              <div class="dash-stat"><div class="dash-stat-val" id="dOrders">0</div><div class="dash-stat-lbl">Pedidos hoy</div></div>
-              <div class="dash-stat"><div class="dash-stat-val" id="dRevenue">$0k</div><div class="dash-stat-lbl">Facturación</div></div>
-              <div class="dash-stat"><div class="dash-stat-val" id="dClients">0</div><div class="dash-stat-lbl">Clientes nuevos</div></div>
-            </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Pedidos</div>
+            <div class="dash-metric-bar"><div class="dash-bar-fill" id="bar-pedidos"></div></div>
+            <div class="dash-metric-val" id="val-pedidos">0%</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Clientes</div>
+            <div class="dash-metric-bar"><div class="dash-bar-fill" id="bar-clientes"></div></div>
+            <div class="dash-metric-val" id="val-clientes">0%</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Facturación</div>
+            <div class="dash-metric-bar"><div class="dash-bar-fill" id="bar-fact"></div></div>
+            <div class="dash-metric-val" id="val-fact">0%</div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <hr class="gradient-sep">
-
-  <section id="it-section">
-    <div class="container">
-      <p class="it-label fade-in">Para empresas sin equipo técnico</p>
-      <h2 class="fade-in">No tenés equipo de IT.<br>Nos tenés a nosotros.</h2>
-      <p class="it-sub fade-in">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hacemos nosotros.</p>
-      <div class="metrics">
-        <div class="metric fade-in"><div class="metric-value">Llave en mano</div><div class="metric-label">Sin fricción técnica</div><div class="metric-desc">Entregamos todo funcionando. Vos no tocás nada técnico.</div></div>
-        <div class="metric fade-in fade-in-delay-1"><div class="metric-value">2–4 semanas</div><div class="metric-label">De diagnóstico a solución</div><div class="metric-desc">Implementado y funcionando en menos de un mes.</div></div>
-        <div class="metric fade-in fade-in-delay-2"><div class="metric-value">Soporte incluido</div><div class="metric-label">Siempre disponibles</div><div class="metric-desc">Mantenimiento y ajustes para que siempre funcione.</div></div>
+    <!-- Facturas Demo -->
+    <div class="demo-card reveal reveal-d1">
+      <div class="demo-header">
+        <div class="demo-badge processing">⚙ Procesando</div>
+        <span class="ex-tag" style="color:var(--fg-dim);font-size:0.78rem;font-family:var(--sans);">Facturación</span>
+      </div>
+      <div class="demo-title">Procesamiento automático de facturas</div>
+      <div class="demo-subtitle">Extraemos, clasificamos y cargamos datos de facturas sin intervención manual.</div>
+      <div class="fact-demo">
+        <div class="fact-inbox">
+          <div class="fact-inbox-label">📥 Facturas recibidas</div>
+          <div class="fact-list" id="fact-list"></div>
+        </div>
+        <div class="fact-arrow">→</div>
+        <div class="fact-output">
+          <div class="fact-inbox-label">✅ Cargadas al sistema</div>
+          <div class="fact-list" id="fact-done"></div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <hr class="gradient-sep">
-
-  <section id="cta">
-    <div class="container">
-      <span class="badge badge--dark fade-in">Empezá hoy</span>
-      <h2 class="fade-in">¿Tenés procesos manuales que te quitan tiempo?</h2>
-
-      <div class="fade-in">
-        <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener" class="btn btn-orange">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          Agendar reunión gratuita
-        </a>
-        <p class="cta-mail">O escribinos directamente a <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a></p>
+    <!-- Pedidos Demo -->
+    <div class="demo-card reveal reveal-d2">
+      <div class="demo-header">
+        <div class="demo-badge live" style="background:rgba(251,191,36,0.1);color:#fbbf24;border-color:rgba(251,191,36,0.25);">● Tiempo real</div>
+        <span class="ex-tag" style="color:var(--fg-dim);font-size:0.78rem;font-family:var(--sans);">Operaciones</span>
+      </div>
+      <div class="demo-title">Carga automática de pedidos</div>
+      <div class="demo-subtitle">Pedidos desde email, WhatsApp o formulario — cargados solos en tu sistema.</div>
+      <div class="pedidos-demo">
+        <div class="pedidos-header-row">
+          <span style="color:var(--fg-muted);font-size:0.75rem;font-family:var(--mono);">ORIGEN</span>
+          <span style="color:var(--fg-muted);font-size:0.75rem;font-family:var(--mono);">PRODUCTO</span>
+          <span style="color:var(--fg-muted);font-size:0.75rem;font-family:var(--mono);">ESTADO</span>
+        </div>
+        <div id="pedidos-list"></div>
       </div>
     </div>
-  </section>
 
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <a href="#" class="logo">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-            </svg>
-          </div>
-          <span class="logo-text">Motor de <span>Tiempo</span></span>
-        </a>
-        <nav class="footer-links">
-          <a href="#servicios">Servicios</a>
-          <a href="#como-funciona">Cómo funciona</a>
-          <a href="#it-section">Nosotros</a>
-          <a href="mailto:hola@motordetiempo.com">Contacto</a>
-        </nav>
+  </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section id="nosotros" class="section props-section">
+  <div class="props-inner">
+    <div class="props-header">
+      <div>
+        <span class="section-eyebrow reveal">// por qué elegirnos</span>
+        <h2 class="reveal">No tenés equipo de IT.<br><span class="grad">Nos tenés a nosotros.</span></h2>
       </div>
-      <p class="footer-copy">© 2025 Motor de Tiempo. Todos los derechos reservados.</p>
+      <p class="reveal">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hacemos nosotros.</p>
     </div>
-  </footer>
+    <div class="props-grid">
+      <div class="prop-card reveal reveal-d1">
+        <div class="prop-value">0</div>
+        <h3>Fricción técnica</h3>
+        <p>Entregamos todo funcionando. Vos no tocás nada técnico durante el proceso.</p>
+      </div>
+      <div class="prop-card reveal reveal-d2">
+        <div class="prop-value">2–4</div>
+        <h3>Semanas de implementación</h3>
+        <p>De diagnóstico a solución funcionando en menos de un mes.</p>
+      </div>
+      <div class="prop-card reveal reveal-d3">
+        <div class="prop-value">∞</div>
+        <h3>Soporte incluido</h3>
+        <p>Mantenimiento y ajustes continuos para que siempre funcione.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script>
-  // ── Nav toggle ──
-  const toggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => {
-    const o = navLinks.classList.toggle('open');
-    toggle.classList.toggle('open', o);
+<!-- CTA -->
+<section id="contacto" class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <span class="section-eyebrow reveal" style="display:block;">// empezá hoy</span>
+    <h2 class="reveal">¿Tenés procesos manuales<br>que te quitan tiempo?</h2>
+    <p class="reveal">La reunión es gratis. El diagnóstico también.</p>
+    <div class="cta-actions reveal">
+      <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank" style="font-size:0.95rem;padding:16px 36px;">Agendar reunión gratuita →</a>
+      <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Motor de Tiempo</a>
+  <ul class="footer-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
+  </ul>
+  <span class="footer-copy">© 2025 Motor de Tiempo</span>
+</footer>
+
+<!-- TWEAKS PANEL -->
+<div id="tweaks-panel">
+  <h4>Tweaks</h4>
+  <div class="tw-row">
+    <label>Acento</label>
+    <input type="color" id="tw-accent" value="#7c5cfc">
+  </div>
+  <div class="tw-row">
+    <label>Acento 2</label>
+    <input type="color" id="tw-accent2" value="#c084fc">
+  </div>
+  <div class="tw-row">
+    <label>Fondo</label>
+    <select id="tw-bg">
+      <option value="#08080f">Negro azulado</option>
+      <option value="#0a0a0a">Negro puro</option>
+      <option value="#080c0f">Negro verdoso</option>
+    </select>
+  </div>
+  <div class="tw-row">
+    <label>Nodos</label>
+    <select id="tw-nodes">
+      <option value="on">Activados</option>
+      <option value="off">Desactivados</option>
+    </select>
+  </div>
+</div>
+
+<script>
+/* ═══ NODES ANIMATION ═══ */
+const canvas = document.getElementById('nodes-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, nodes, conns, animFrame, nodesOn = true;
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+function randNode() {
+  return {
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 2 + 1.5,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    opacity: Math.random() * 0.5 + 0.2
+  };
+}
+
+function initNodes() {
+  nodes = Array.from({ length: 55 }, randNode);
+}
+
+function drawNodes(ts) {
+  if (!nodesOn) return;
+  ctx.clearRect(0, 0, W, H);
+  // move
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
   });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    navLinks.classList.remove('open'); toggle.classList.remove('open');
-  }));
-
-  // ── Nav scroll ──
-  const mainNav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => mainNav.classList.toggle('scrolled', scrollY > 40), { passive: true });
-
-  // ── Active link ──
-  const secs = document.querySelectorAll('section[id]');
-  const navAs = document.querySelectorAll('.nav-links a:not(.nav-cta)');
-  window.addEventListener('scroll', () => {
-    let cur = '';
-    secs.forEach(s => { if (scrollY >= s.offsetTop - 110) cur = s.id; });
-    navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? '#fff' : ''; });
-  }, { passive: true });
-
-  // ── Fade-in IO ──
-  const fadeEls = document.querySelectorAll('.fade-in');
-  const io = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  fadeEls.forEach(el => io.observe(el));
-
-  // ── Hero: perspective road canvas ──
-  (function() {
-    const hero = document.getElementById('hero');
-    const cv = document.createElement('canvas');
-    cv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
-    hero.prepend(cv);
-    const ctx = cv.getContext('2d');
-    let w, h, vpy;
-
-    function resize() {
-      w = cv.width = hero.offsetWidth;
-      h = cv.height = hero.offsetHeight;
-      vpy = h * 0.58;
-    }
-
-    function draw(ts) {
-      ctx.clearRect(0, 0, w, h);
-
-      // Ambient orange glow bottom-left (like n8n)
-      const g1 = ctx.createRadialGradient(w * 0.18, h, 0, w * 0.18, h, h * 0.85);
-      g1.addColorStop(0, 'rgba(242,138,0,0.18)'); g1.addColorStop(1, 'rgba(242,138,0,0)');
-      ctx.fillStyle = g1; ctx.fillRect(0, 0, w, h);
-
-      // Ambient blue glow bottom-right
-      const g2 = ctx.createRadialGradient(w * 0.82, h, 0, w * 0.82, h, h * 0.9);
-      g2.addColorStop(0, 'rgba(33,113,199,0.2)'); g2.addColorStop(1, 'rgba(33,113,199,0)');
-      ctx.fillStyle = g2; ctx.fillRect(0, 0, w, h);
-
-      // Perspective floor lines
-      const vpx = w / 2;
-      for (let i = 0; i <= 14; i++) {
-        const t = i / 14;
-        const bx = t * w;
-        const dist = Math.abs(t - 0.5) * 2;
-        ctx.beginPath(); ctx.moveTo(vpx, vpy); ctx.lineTo(bx, h);
-        ctx.strokeStyle = `rgba(181,212,244,${Math.max(0.01, 0.055 - dist * 0.025)})`;
-        ctx.lineWidth = 0.6; ctx.stroke();
-      }
-
-      // Horizontal distance lines
-      for (let j = 1; j <= 7; j++) {
-        const frac = j / 7;
-        const y = vpy + (h - vpy) * Math.pow(frac, 0.65);
-        const hw = (w / 2) * frac;
-        ctx.beginPath(); ctx.moveTo(vpx - hw, y); ctx.lineTo(vpx + hw, y);
-        ctx.strokeStyle = `rgba(181,212,244,${0.045 * (1 - frac * 0.5)})`;
-        ctx.lineWidth = 0.5; ctx.stroke();
-      }
-
-      // Horizon glow line
-      const hg = ctx.createLinearGradient(0, vpy - 4, 0, vpy + 4);
-      hg.addColorStop(0, 'transparent'); hg.addColorStop(0.5, 'rgba(242,138,0,0.38)'); hg.addColorStop(1, 'transparent');
-      ctx.fillStyle = hg; ctx.fillRect(0, vpy - 6, w, 12);
-
-      // Sweeping beam on horizon
-      const sweep = (ts * 0.00022 % 1);
-      const bx = sweep * (w + 240) - 120;
-      const br = ctx.createRadialGradient(bx, vpy, 0, bx, vpy, 130);
-      br.addColorStop(0, 'rgba(255,205,80,0.88)');
-      br.addColorStop(0.35, 'rgba(242,138,0,0.35)');
-      br.addColorStop(0.75, 'rgba(242,138,0,0.08)');
-      br.addColorStop(1, 'rgba(242,138,0,0)');
-      ctx.beginPath(); ctx.ellipse(bx, vpy, 130, 18, 0, 0, Math.PI * 2);
-      ctx.fillStyle = br; ctx.fill();
-
-      // Vanishing point subtle glow
-      const vg = ctx.createRadialGradient(vpx, vpy, 0, vpx, vpy, 220);
-      vg.addColorStop(0, 'rgba(242,138,0,0.07)'); vg.addColorStop(1, 'rgba(242,138,0,0)');
-      ctx.fillStyle = vg; ctx.fillRect(0, 0, w, h);
-
-      requestAnimationFrame(draw);
-    }
-
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-    requestAnimationFrame(draw);
-  })();
-
-  // ── WhatsApp Demo ──
-  function initWA() {
-    const container = document.getElementById('waDemo');
-    const typingEl = document.getElementById('waTyping');
-    const msgs = [
-      { t: 'in',  txt: '¿Tienen turnos disponibles mañana?' },
-      { t: 'out', txt: '¡Hola! 👋 Sí, tenemos horarios. ¿A qué hora te viene bien?' },
-      { t: 'in',  txt: 'A las 10am si es posible' },
-      { t: 'out', txt: '✅ ¡Perfecto! Turno confirmado para mañana 10:00am. Te mandamos recordatorio.' },
-      { t: 'in',  txt: 'Genial, gracias! 🙌' },
-      { t: 'out', txt: '¡De nada! Estamos aquí para ayudarte. Hasta mañana 👋' },
-    ];
-    let idx = 0;
-
-    function typing(cb, delay) {
-      typingEl.classList.add('active');
-      setTimeout(() => { typingEl.classList.remove('active'); cb(); }, delay);
-    }
-
-    function addBubble(msg) {
-      const el = document.createElement('div');
-      el.className = 'chat-bubble bubble-' + msg.t;
-      el.textContent = msg.txt;
-      container.insertBefore(el, typingEl);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function next() {
-      if (idx >= msgs.length) {
-        setTimeout(() => {
-          const bs = container.querySelectorAll('.chat-bubble');
-          bs.forEach(b => { b.style.transition = 'opacity .4s'; b.style.opacity = '0'; });
-          setTimeout(() => { bs.forEach(b => b.remove()); idx = 0; setTimeout(run, 600); }, 450);
-        }, 3500);
-        return;
-      }
-      const m = msgs[idx++];
-      if (m.t === 'out') {
-        typing(() => { addBubble(m); setTimeout(next, 950); }, 850 + Math.random() * 350);
-      } else {
-        addBubble(m); setTimeout(next, 1100 + Math.random() * 300);
+  // connections
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 140) {
+        const alpha = (1 - dist/140) * 0.15;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(124,92,252,${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
       }
     }
-
-    function run() { next(); }
-    run();
   }
+  // dots
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(124,92,252,${n.opacity})`;
+    ctx.fill();
+  });
+  animFrame = requestAnimationFrame(drawNodes);
+}
 
-  // ── Dashboard Demo ──
-  function initDash() {
-    const bars = [
-      { fill: 'bar0', val: 'bv0', pct: 87 },
-      { fill: 'bar1', val: 'bv1', pct: 64 },
-      { fill: 'bar2', val: 'bv2', pct: 93 },
-      { fill: 'bar3', val: 'bv3', pct: 71 },
-    ];
-    const stats = [
-      { id: 'dOrders',  target: 142, fmt: v => String(Math.round(v)) },
-      { id: 'dRevenue', target: 284, fmt: v => '$' + Math.round(v) + 'k' },
-      { id: 'dClients', target: 38,  fmt: v => String(Math.round(v)) },
-    ];
+function startNodes() {
+  resize(); initNodes(); drawNodes();
+  window.addEventListener('resize', () => { resize(); });
+}
+startNodes();
 
-    function anim() {
-      bars.forEach((b, i) => {
-        const fill = document.getElementById(b.fill);
-        const valEl = document.getElementById(b.val);
-        if (!fill || !valEl) return;
-        fill.style.width = '0%';
-        setTimeout(() => {
-          fill.style.width = b.pct + '%';
-          let c = 0; const step = b.pct / 60;
-          const iv = setInterval(() => { c = Math.min(c + step, b.pct); valEl.textContent = Math.round(c) + '%'; if (c >= b.pct) clearInterval(iv); }, 16);
-        }, i * 140);
-      });
-      stats.forEach(s => {
-        const el = document.getElementById(s.id); if (!el) return;
-        let c = 0; const step = s.target / 80;
-        const iv = setInterval(() => { c = Math.min(c + step, s.target); el.textContent = s.fmt(c); if (c >= s.target) clearInterval(iv); }, 18);
-      });
-    }
-
-    anim();
-    setInterval(() => {
-      bars.forEach(b => { const f = document.getElementById(b.fill); if (f) { f.style.transition = 'none'; f.style.width = '0%'; } });
-      stats.forEach(s => { const el = document.getElementById(s.id); if (el) el.textContent = s.fmt(0); });
-      setTimeout(anim, 280);
-    }, 7500);
+/* ═══ WHATSAPP DEMO ═══ */
+const waConvo = [
+  { from: 'user', text: 'Hola, ¿tienen turnos disponibles esta semana?' },
+  { from: 'bot',  text: '¡Hola! Sí, tenemos disponibilidad 😊 ¿Para qué día te viene mejor?' },
+  { from: 'user', text: 'El jueves a la tarde' },
+  { from: 'bot',  text: '✅ Te agendé para el jueves 24 a las 17:00. Te llega confirmación por acá.' },
+  { from: 'user', text: '¿Cuánto sale la consulta?' },
+  { from: 'bot',  text: 'La primera consulta es gratis 🎉 ¿Te mando el link de videollamada?' },
+  { from: 'user', text: 'Sí, por favor' },
+  { from: 'bot',  text: 'Perfecto, ya te lo envié. ¡Hasta el jueves! 👋' },
+];
+let waIdx = 0;
+function waNext() {
+  const box = document.getElementById('wa-messages');
+  if (!box) return;
+  if (waIdx >= waConvo.length) {
+    setTimeout(() => { waIdx = 0; box.innerHTML = ''; setTimeout(waNext, 600); }, 3000);
+    return;
   }
+  const msg = waConvo[waIdx++];
+  if (msg.from === 'bot') {
+    const t = document.createElement('div');
+    t.className = 'wa-typing';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    box.appendChild(t);
+    setTimeout(() => {
+      if (box.contains(t)) box.removeChild(t);
+      appendWaMsg(box, msg);
+      setTimeout(waNext, 1800);
+    }, 1100);
+  } else {
+    appendWaMsg(box, msg);
+    setTimeout(waNext, 1200);
+  }
+}
+function appendWaMsg(box, msg) {
+  const el = document.createElement('div');
+  el.className = `wa-msg ${msg.from}`;
+  el.textContent = msg.text;
+  box.appendChild(el);
+}
+setTimeout(waNext, 600);
 
-  // ── Trigger demos when visible ──
-  const demoSection = document.querySelector('.demos-grid');
-  let demosStarted = false;
-  const demoIO = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !demosStarted) {
-      demosStarted = true;
-      initWA();
-      initDash();
-      demoIO.disconnect();
-    }
-  }, { threshold: 0.2 });
-  if (demoSection) demoIO.observe(demoSection);
-  </script>
+/* ═══ DASHBOARD DEMO ═══ */
+const dashBars = [
+  { bar:'bar-ventas',   val:'val-ventas',   pct:78 },
+  { bar:'bar-pedidos',  val:'val-pedidos',  pct:62 },
+  { bar:'bar-clientes', val:'val-clientes', pct:91 },
+  { bar:'bar-fact',     val:'val-fact',     pct:55 },
+];
+const dashKpis = [
+  { id:'kpi-pedidos', value:47,  fmt: v => v },
+  { id:'kpi-fact',    value:128, fmt: v => '$'+v+'k' },
+  { id:'kpi-cli',     value:23,  fmt: v => v },
+];
+function animateCount(el, target, fmt) {
+  let cur = 0; const step = Math.ceil(target/36);
+  const t = setInterval(() => {
+    cur = Math.min(cur+step, target);
+    el.textContent = fmt(cur);
+    if (cur >= target) clearInterval(t);
+  }, 28);
+}
+function runDash() {
+  dashBars.forEach(d => {
+    const bar = document.getElementById(d.bar);
+    const val = document.getElementById(d.val);
+    if (bar) bar.style.width = d.pct + '%';
+    if (val) val.textContent = d.pct + '%';
+  });
+  dashKpis.forEach(k => {
+    const el = document.getElementById(k.id);
+    if (el) animateCount(el, k.value, k.fmt);
+  });
+}
+const dashObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { runDash(); } });
+}, { threshold: 0.2 });
+const dashCard = document.querySelectorAll('.demo-card')[1];
+if (dashCard) dashObs.observe(dashCard);
+setInterval(() => {
+  dashBars.forEach(d => { d.pct = Math.floor(Math.random()*38+50); });
+  dashKpis[0].value = Math.floor(Math.random()*40+20);
+  dashKpis[1].value = Math.floor(Math.random()*90+80);
+  dashKpis[2].value = Math.floor(Math.random()*20+8);
+  runDash();
+}, 5500);
 
+/* ═══ FACTURAS DEMO ═══ */
+const facturas = [
+  { icon:'🧾', name:'Factura_Proveedor_A.pdf', monto:'$12.400' },
+  { icon:'🧾', name:'FC-2024-0391.pdf',        monto:'$8.750'  },
+  { icon:'🧾', name:'Remito_LogiCo.pdf',       monto:'$3.200'  },
+  { icon:'🧾', name:'Factura_B_0089.pdf',      monto:'$21.000' },
+  { icon:'🧾', name:'FC-2024-0392.pdf',        monto:'$5.600'  },
+];
+let factIdx = 0;
+function addFactura() {
+  const f = facturas[factIdx % facturas.length]; factIdx++;
+  const inbox = document.getElementById('fact-list');
+  const done  = document.getElementById('fact-done');
+  if (!inbox || !done) return;
+  // add to inbox
+  const el = document.createElement('div');
+  el.className = 'fact-item';
+  el.innerHTML = `<span class="fi-icon">${f.icon}</span><span>${f.name}</span><span style="margin-left:auto;color:var(--fg-muted);font-size:0.72rem">${f.monto}</span>`;
+  inbox.appendChild(el);
+  if (inbox.children.length > 3) inbox.removeChild(inbox.firstChild);
+  // move to done after delay
+  setTimeout(() => {
+    const d = document.createElement('div');
+    d.className = 'fact-item done';
+    d.innerHTML = `<span class="fi-icon">✅</span><span>${f.name}</span><span style="margin-left:auto;color:#4ade80;font-size:0.72rem">${f.monto}</span>`;
+    done.appendChild(d);
+    if (done.children.length > 3) done.removeChild(done.firstChild);
+  }, 1400);
+}
+setInterval(addFactura, 2200);
+setTimeout(addFactura, 400);
+
+/* ═══ PEDIDOS DEMO ═══ */
+const pedidoItems = [
+  { origen:'📧 Email',    producto:'Silla ergonómica x2',    status:'ok'  },
+  { origen:'💬 WhatsApp', producto:'Mesa de escritorio',     status:'ok'  },
+  { origen:'📋 Form',     producto:'Monitor 27" curvo',      status:'ok'  },
+  { origen:'📧 Email',    producto:'Auriculares inalámbr.',  status:'ok'  },
+  { origen:'💬 WhatsApp', producto:'Teclado mecánico',       status:'ok'  },
+  { origen:'📋 Form',     producto:'Webcam HD 1080p',        status:'ok'  },
+];
+let pedIdx = 0;
+function addPedido() {
+  const list = document.getElementById('pedidos-list');
+  if (!list) return;
+  const p = pedidoItems[pedIdx % pedidoItems.length]; pedIdx++;
+  const row = document.createElement('div');
+  row.className = 'pedido-row';
+  row.innerHTML = `
+    <div class="pedido-origin">${p.origen}</div>
+    <div class="pedido-product">${p.producto}</div>
+    <div class="pedido-status new">● Nuevo</div>
+  `;
+  list.insertBefore(row, list.firstChild);
+  if (list.children.length > 4) list.removeChild(list.lastChild);
+  // change to ok
+  setTimeout(() => {
+    const s = row.querySelector('.pedido-status');
+    if (s) { s.className = 'pedido-status ok'; s.textContent = '✓ Cargado'; }
+  }, 1600);
+}
+setInterval(addPedido, 2600);
+setTimeout(addPedido, 200);
+
+/* ═══ SCROLL REVEAL ═══ */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ═══ TWEAKS ═══ */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"accentColor":"#f97316","accent2Color":"#fb923c","bgColor":"#08080f","nodesOn":"on"}/*EDITMODE-END*/;
+
+function applyTweaks(t) {
+  document.documentElement.style.setProperty('--accent', t.accentColor);
+  document.documentElement.style.setProperty('--accent2', t.accent2Color);
+  document.documentElement.style.setProperty('--bg', t.bgColor);
+  document.documentElement.style.setProperty('--glow', t.accentColor + '55');
+  nodesOn = t.nodesOn !== 'off';
+  if (!nodesOn) ctx.clearRect(0, 0, W, H);
+  document.getElementById('tw-accent').value = t.accentColor;
+  document.getElementById('tw-accent2').value = t.accent2Color;
+  document.getElementById('tw-bg').value = t.bgColor;
+  document.getElementById('tw-nodes').value = t.nodesOn;
+}
+applyTweaks(TWEAK_DEFAULTS);
+
+document.getElementById('tw-accent').addEventListener('input', e => {
+  const v = { ...TWEAK_DEFAULTS, accentColor: e.target.value };
+  applyTweaks(v);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: e.target.value } }, '*');
+});
+document.getElementById('tw-accent2').addEventListener('input', e => {
+  const v = { ...TWEAK_DEFAULTS, accent2Color: e.target.value };
+  applyTweaks(v);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accent2Color: e.target.value } }, '*');
+});
+document.getElementById('tw-bg').addEventListener('change', e => {
+  const v = { ...TWEAK_DEFAULTS, bgColor: e.target.value };
+  applyTweaks(v);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bgColor: e.target.value } }, '*');
+});
+document.getElementById('tw-nodes').addEventListener('change', e => {
+  const v = { ...TWEAK_DEFAULTS, nodesOn: e.target.value };
+  applyTweaks(v);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { nodesOn: e.target.value } }, '*');
+});
+
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
 </body>
 </html>
