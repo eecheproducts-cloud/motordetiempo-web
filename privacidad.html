@@ -8,253 +8,98 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:      #08080f;
-  --bg2:     #0e0e1a;
-  --bg3:     #13131f;
-  --border:  rgba(255,255,255,0.07);
-  --fg:      #f0f0ff;
-  --fg-dim:  rgba(240,240,255,0.5);
-  --fg-muted:rgba(240,240,255,0.25);
-  --accent:  #f97316;
-  --accent2: #fb923c;
-  --green:   #4ade80;
-  --glow:    rgba(249,115,22,0.35);
-  --sans:    'Space Grotesk', system-ui, sans-serif;
-  --body:    'Inter', system-ui, sans-serif;
-  --mono:    'Space Mono', monospace;
+  --bg:#08080f; --bg2:#0e0e1a; --bg3:#13131f;
+  --border:rgba(255,255,255,0.07);
+  --fg:#f0f0ff; --fg-dim:rgba(240,240,255,0.5); --fg-muted:rgba(240,240,255,0.25);
+  --accent:#f97316; --accent2:#fb923c; --green:#4ade80; --glow:rgba(249,115,22,0.35);
+  --sans:'Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--body);
-  font-weight: 400;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:400;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:64px 64px}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;border-bottom:1px solid var(--border);background:rgba(8,8,15,0.85);backdrop-filter:blur(20px)}
+.nav-logo{font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo-icon{width:28px;height:28px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--fg-dim);text-decoration:none;font-size:0.875rem;font-family:var(--sans);transition:color 0.2s}
+.nav-links a:hover{color:var(--fg)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-badge{display:flex;align-items:center;gap:7px;font-size:0.75rem;color:var(--green);font-family:var(--mono);background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);padding:4px 12px;border-radius:999px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.nav-cta{background:var(--accent);color:#fff;font-family:var(--sans);font-weight:600;font-size:0.82rem;text-decoration:none;padding:9px 20px;border-radius:8px;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 0 24px var(--glow)}
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; height: 64px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(8,8,15,0.85);
-  backdrop-filter: blur(20px);
-}
-.nav-logo {
-  font-family: var(--sans); font-weight: 700; font-size: 1rem;
-  color: var(--fg); text-decoration: none;
-  display: flex; align-items: center; gap: 10px;
-}
-.nav-logo-icon {
-  width: 28px; height: 28px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a {
-  color: var(--fg-dim); text-decoration: none;
-  font-size: 0.875rem; font-family: var(--sans);
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--fg); }
-.nav-right { display: flex; align-items: center; gap: 16px; }
-.nav-badge {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 0.75rem; color: var(--green); font-family: var(--mono);
-  background: rgba(74,222,128,0.08);
-  border: 1px solid rgba(74,222,128,0.2);
-  padding: 4px 12px; border-radius: 999px;
-}
-.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 2s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.nav-cta {
-  background: var(--accent); color: #fff;
-  font-family: var(--sans); font-weight: 600; font-size: 0.82rem;
-  text-decoration: none; padding: 9px 20px; border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative; overflow: hidden;
-  animation: nav-pulse 3s 2s infinite;
-}
-.nav-cta::before {
-  content: '';
-  position: absolute; top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-  transform: skewX(-15deg);
-  animation: shimmer 3s 1s infinite;
-}
-.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 24px var(--glow); }
-@keyframes shimmer { 0%{left:-100%} 60%,100%{left:160%} }
-@keyframes nav-pulse { 0%,80%,100%{box-shadow:0 0 0 0 var(--glow)} 40%{box-shadow:0 0 0 6px transparent} }
+.page-header{padding:140px 40px 72px;position:relative;border-bottom:1px solid var(--border)}
+.page-header-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(249,115,22,0.07) 0%,transparent 65%);pointer-events:none}
+.page-header-inner{max-width:760px;margin:0 auto;position:relative;z-index:1}
+.page-eyebrow{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px}
+.page-title{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,4vw,3rem);line-height:1.1;letter-spacing:-0.025em;margin-bottom:14px}
+.page-subtitle{font-family:var(--mono);font-size:0.78rem;color:var(--fg-muted);letter-spacing:0.04em}
 
-/* ── PAGE HEADER ── */
-.page-header {
-  padding: 140px 40px 72px;
-  position: relative;
-  border-bottom: 1px solid var(--border);
-}
-.page-header-glow {
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 400px;
-  background: radial-gradient(ellipse, rgba(249,115,22,0.07) 0%, transparent 65%);
-  pointer-events: none;
-}
-.page-header-inner {
-  max-width: 760px;
-  margin: 0 auto;
-  position: relative; z-index: 1;
-}
-.page-eyebrow {
-  font-family: var(--mono); font-size: 0.72rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--accent); display: block; margin-bottom: 20px;
-}
-.page-title {
-  font-family: var(--sans); font-weight: 700;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.1; letter-spacing: -0.025em;
-  margin-bottom: 14px;
-}
-.page-subtitle {
-  font-family: var(--mono); font-size: 0.78rem;
-  color: var(--fg-muted); letter-spacing: 0.04em;
-}
+.content-wrap{max-width:760px;margin:0 auto;padding:72px 40px 100px;position:relative;z-index:1}
+.policy-section{margin-bottom:52px}
+.policy-section:last-child{margin-bottom:0}
+.policy-num{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:10px}
+.policy-section h2{font-family:var(--sans);font-weight:700;font-size:1.2rem;line-height:1.3;letter-spacing:-0.01em;margin-bottom:16px;color:var(--fg)}
+.policy-section p{font-size:0.95rem;color:var(--fg-dim);line-height:1.85}
+.policy-section p+p{margin-top:12px}
+.policy-section a{color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(251,146,60,0.3);transition:border-color 0.2s,color 0.2s}
+.policy-section a:hover{color:var(--fg);border-color:rgba(240,240,255,0.3)}
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:20px 24px;margin-top:16px}
+.info-box p{font-size:0.88rem;color:rgba(240,240,255,0.65);line-height:1.75}
+.info-box strong{color:var(--fg);font-weight:600;font-family:var(--sans)}
+.policy-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:0.88rem}
+.policy-table th{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border)}
+.policy-table td{padding:12px 14px;color:var(--fg-dim);border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;line-height:1.6}
+.policy-table tr:last-child td{border-bottom:none}
+.policy-table td:first-child{color:var(--fg);font-family:var(--sans);font-weight:500;white-space:nowrap}
+.policy-divider{height:1px;background:var(--border);margin:52px 0}
 
-/* ── CONTENT ── */
-.content-wrap {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 72px 40px 100px;
-  position: relative; z-index: 1;
-}
+/* FOOTER */
+footer{padding:28px 40px;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-main{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-weight:700;font-size:0.9rem;color:var(--fg-dim);text-decoration:none}
+.footer-links{display:flex;gap:24px;list-style:none}
+.footer-links a{color:var(--fg-muted);font-size:0.8rem;text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--fg-dim)}
+.footer-copy{font-size:0.75rem;color:var(--fg-muted);font-family:var(--mono)}
+.footer-legal{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.footer-legal a,.footer-legal button{color:var(--fg-muted);font-size:0.75rem;text-decoration:none;font-family:var(--mono);background:none;border:none;cursor:pointer;padding:0;transition:color 0.2s}
+.footer-legal a:hover,.footer-legal button:hover{color:var(--fg-dim)}
 
-.policy-section {
-  margin-bottom: 52px;
-}
-.policy-section:last-child { margin-bottom: 0; }
+/* COOKIE BANNER */
+#cookie-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9000;background:rgba(8,8,15,0.97);border-top:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px);padding:20px 40px;font-family:var(--body)}
+.cookie-inner{max-width:1100px;margin:0 auto}
+.cookie-text{font-size:0.83rem;color:var(--fg-dim);line-height:1.6;margin-bottom:14px}
+.cookie-btns{display:flex;gap:10px;flex-wrap:wrap}
+.cookie-btn{font-family:var(--sans);font-weight:600;font-size:0.8rem;padding:9px 20px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;background:rgba(255,255,255,0.05);color:var(--fg-dim);transition:all 0.15s}
+.cookie-btn:hover{background:rgba(255,255,255,0.1);color:var(--fg)}
+#cookie-config{display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)}
+#cookie-config.open{display:block}
+.cookie-cat{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.cookie-cat:last-of-type{border-bottom:none}
+.cookie-cat-label{font-family:var(--sans);font-weight:600;font-size:0.82rem;color:var(--fg);margin-bottom:3px}
+.cookie-cat-desc{font-size:0.75rem;color:var(--fg-muted);line-height:1.5}
+.cookie-always{font-family:var(--mono);font-size:0.68rem;color:var(--green);background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);padding:3px 8px;border-radius:999px;white-space:nowrap}
+.cookie-toggle{appearance:none;-webkit-appearance:none;width:38px;height:20px;border-radius:999px;cursor:pointer;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);position:relative;transition:background 0.2s;flex-shrink:0}
+.cookie-toggle:checked{background:var(--accent);border-color:var(--accent)}
+.cookie-toggle::after{content:'';position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);transition:left 0.2s,background 0.2s}
+.cookie-toggle:checked::after{left:21px;background:#fff}
+.cookie-save{margin-top:12px;font-family:var(--sans);font-weight:600;font-size:0.8rem;padding:9px 22px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),color-mix(in oklch,var(--accent) 70%,black));color:#fff;cursor:pointer}
+.cookie-save:hover{opacity:0.88}
+@media(max-width:768px){#cookie-banner{padding:16px 20px}.cookie-btns{flex-direction:column}.cookie-btn{width:100%;text-align:center}}
 
-.policy-num {
-  font-family: var(--mono); font-size: 0.68rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--accent); display: block; margin-bottom: 10px;
-}
-.policy-section h2 {
-  font-family: var(--sans); font-weight: 700;
-  font-size: 1.2rem; line-height: 1.3;
-  letter-spacing: -0.01em;
-  margin-bottom: 16px;
-  color: var(--fg);
-}
-.policy-section p {
-  font-size: 0.95rem;
-  color: var(--fg-dim);
-  line-height: 1.85;
-}
-.policy-section p + p { margin-top: 12px; }
-
-/* Inline links */
-.policy-section a {
-  color: var(--accent2);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(251,146,60,0.3);
-  transition: border-color 0.2s, color 0.2s;
-}
-.policy-section a:hover { color: var(--fg); border-color: rgba(240,240,255,0.3); }
-
-/* Highlight box */
-.info-box {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 10px;
-  padding: 20px 24px;
-  margin-top: 16px;
-}
-.info-box p {
-  font-size: 0.88rem;
-  color: rgba(240,240,255,0.65);
-  line-height: 1.75;
-}
-.info-box strong {
-  color: var(--fg);
-  font-weight: 600;
-  font-family: var(--sans);
-}
-
-/* Data table */
-.policy-table {
-  width: 100%; border-collapse: collapse;
-  margin-top: 16px;
-  font-size: 0.88rem;
-}
-.policy-table th {
-  font-family: var(--mono); font-size: 0.68rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--fg-muted);
-  text-align: left; padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-}
-.policy-table td {
-  padding: 12px 14px;
-  color: var(--fg-dim);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  vertical-align: top;
-  line-height: 1.6;
-}
-.policy-table tr:last-child td { border-bottom: none; }
-.policy-table td:first-child { color: var(--fg); font-family: var(--sans); font-weight: 500; white-space: nowrap; }
-
-/* Divider */
-.policy-divider {
-  height: 1px; background: var(--border);
-  margin: 52px 0;
-}
-
-/* ── FOOTER ── */
-footer {
-  padding: 28px 40px; border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: relative; z-index: 1;
-}
-.footer-logo { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: var(--fg-dim); text-decoration: none; }
-.footer-links { display: flex; gap: 24px; list-style: none; }
-.footer-links a { color: var(--fg-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--fg-dim); }
-.footer-copy { font-size: 0.75rem; color: var(--fg-muted); font-family: var(--mono); }
-
-/* ── SCROLL REVEAL ── */
-.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.6s, transform 0.6s; }
-.reveal.visible { opacity:1; transform:none; }
-
-/* ── MOBILE ── */
-@media (max-width: 768px) {
-  nav { padding: 0 20px; }
-  .nav-links, .nav-badge { display: none; }
-  .page-header { padding: 110px 20px 52px; }
-  .content-wrap { padding: 52px 20px 80px; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 20px; }
-  .footer-links { flex-wrap: wrap; justify-content: center; }
-  .policy-table { display: block; overflow-x: auto; }
-}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:768px){nav{padding:0 20px}.nav-links,.nav-badge{display:none}.page-header{padding:110px 20px 52px}.content-wrap{padding:52px 20px 80px}footer{padding:24px 20px}.footer-main{flex-direction:column;align-items:flex-start;gap:12px}.footer-links{flex-wrap:wrap}.policy-table{display:block;overflow-x:auto}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
     <div class="nav-logo-icon">⚡</div>
@@ -271,7 +116,6 @@ footer {
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
 <header class="page-header">
   <div class="page-header-glow"></div>
   <div class="page-header-inner">
@@ -281,15 +125,13 @@ footer {
   </div>
 </header>
 
-<!-- CONTENT -->
 <main class="content-wrap">
 
-  <!-- 1. Quién somos -->
   <div class="policy-section reveal">
     <span class="policy-num">01</span>
-    <h2>Quién somos</h2>
+    <h2>Quién soy</h2>
     <p>Motor de Tiempo es un nombre comercial operado por <strong style="color:var(--fg);font-family:var(--sans)">Nicolás Gonzalo Echechurre</strong>, autónomo registrado en los Países Bajos (<strong style="color:var(--fg);font-family:var(--sans)">KvK 95562028</strong>), con domicilio en Bonaventurastraat 108 B02, Rotterdam, Países Bajos. Número de identificación fiscal europeo (BTW): <strong style="color:var(--fg);font-family:var(--sans)">NL005161451B23</strong>.</p>
-    <p>Contamos también con presencia en Argentina, donde operamos bajo <strong style="color:var(--fg);font-family:var(--sans)">CUIT 20-37720904-5</strong> en carácter de Monotributista, con domicilio fiscal en Av. General Güemes 155, Vaqueros, Salta (CP 4401).</p>
+    <p>Cuento también con presencia en Argentina, donde opero bajo <strong style="color:var(--fg);font-family:var(--sans)">CUIT 20-37720904-5</strong> en carácter de Monotributista, con domicilio fiscal en Av. General Güemes 155, Vaqueros, Salta (CP 4401).</p>
     <div class="info-box">
       <p><strong>Email general:</strong> <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a><br>
       <strong>Email de privacidad:</strong> <a href="mailto:privacidad@motordetiempo.com">privacidad@motordetiempo.com</a></p>
@@ -298,65 +140,49 @@ footer {
 
   <div class="policy-divider"></div>
 
-  <!-- 2. Qué datos -->
   <div class="policy-section reveal">
     <span class="policy-num">02</span>
-    <h2>Qué datos recolectamos</h2>
-    <p>Recolectamos únicamente los datos que nos proporcionás voluntariamente al agendar una reunión a través de Calendly (nombre, email, zona horaria) o al escribirnos directamente a <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a>.</p>
-    <p>No recolectamos datos de pago, datos de salud ni ningún otro dato sensible a través del sitio web.</p>
+    <h2>Qué datos recolecto</h2>
+    <p>Recolecto únicamente los datos que me proporcionás voluntariamente al agendar una reunión a través de Calendly (nombre, email, zona horaria) o al escribirme directamente a <a href="mailto:hola@motordetiempo.com">hola@motordetiempo.com</a>.</p>
+    <p>No recolecto datos de pago, datos de salud ni ningún otro dato sensible a través del sitio web.</p>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 3. Para qué -->
   <div class="policy-section reveal">
     <span class="policy-num">03</span>
-    <h2>Para qué usamos tus datos</h2>
-    <p>Tus datos se usan exclusivamente para: coordinar y realizar la reunión solicitada, responder tu consulta, y si avanzamos en una relación comercial, gestionar ese vínculo.</p>
-    <p>No usamos tus datos para publicidad ni los cedemos a terceros con fines comerciales.</p>
+    <h2>Para qué uso tus datos</h2>
+    <p>Tus datos se usan exclusivamente para coordinar y realizar la reunión solicitada, responder tu consulta, y si avanzamos en una relación comercial, gestionar ese vínculo.</p>
+    <p>No uso tus datos para publicidad ni los cedo a terceros con fines comerciales.</p>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 4. Base legal -->
   <div class="policy-section reveal">
     <span class="policy-num">04</span>
     <h2>Base legal del tratamiento</h2>
-    <p>Operamos conforme al Reglamento General de Protección de Datos de la UE (RGPD, Reglamento 2016/679). La base legal del tratamiento es tu consentimiento al contactarnos y el interés legítimo en gestionar relaciones comerciales.</p>
-    <p>Para usuarios en Argentina, aplicamos también los principios de la <strong style="color:var(--fg);font-family:var(--sans)">Ley 25.326 de Protección de Datos Personales</strong>.</p>
+    <p>Opero conforme al Reglamento General de Protección de Datos de la UE (RGPD, Reglamento 2016/679). La base legal del tratamiento es tu consentimiento al contactarme y el interés legítimo en gestionar relaciones comerciales.</p>
+    <p>Para usuarios en Argentina, aplico también los principios de la <strong style="color:var(--fg);font-family:var(--sans)">Ley 25.326 de Protección de Datos Personales</strong>.</p>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 5. Con quién -->
   <div class="policy-section reveal">
     <span class="policy-num">05</span>
-    <h2>Con quién compartimos tus datos</h2>
-    <p>Utilizamos los siguientes servicios que pueden acceder a tus datos en calidad de encargados de tratamiento:</p>
+    <h2>Con quién comparto tus datos</h2>
+    <p>Utilizo los siguientes servicios que pueden acceder a tus datos en calidad de encargados de tratamiento:</p>
     <table class="policy-table">
-      <thead>
-        <tr>
-          <th>Servicio</th>
-          <th>Rol</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Servicio</th><th>Rol</th></tr></thead>
       <tbody>
-        <tr>
-          <td>Calendly Inc.</td>
-          <td>Plataforma de agendamiento de reuniones</td>
-        </tr>
-        <tr>
-          <td>Google LLC</td>
-          <td>Comunicaciones por email vía Google Workspace</td>
-        </tr>
+        <tr><td>Calendly Inc.</td><td>Plataforma de agendamiento de reuniones</td></tr>
+        <tr><td>Google LLC</td><td>Comunicaciones por email vía Google Workspace</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:16px">No vendemos ni cedemos tus datos a ningún otro tercero.</p>
+    <p style="margin-top:16px">No vendo ni cedo tus datos a ningún otro tercero.</p>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 6. Transferencias -->
   <div class="policy-section reveal">
     <span class="policy-num">06</span>
     <h2>Transferencias internacionales</h2>
@@ -365,82 +191,104 @@ footer {
 
   <div class="policy-divider"></div>
 
-  <!-- 7. Retención -->
   <div class="policy-section reveal">
     <span class="policy-num">07</span>
-    <h2>Cuánto tiempo guardamos tus datos</h2>
+    <h2>Cuánto tiempo guardo tus datos</h2>
     <table class="policy-table">
-      <thead>
-        <tr>
-          <th>Caso</th>
-          <th>Período de retención</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Caso</th><th>Período</th></tr></thead>
       <tbody>
-        <tr>
-          <td>Consultas sin relación comercial posterior</td>
-          <td>Máximo 12 meses desde el último contacto</td>
-        </tr>
-        <tr>
-          <td>Datos de clientes activos</td>
-          <td>Durante la relación comercial y hasta 7 años posteriores, conforme a las obligaciones fiscales y contables de los Países Bajos (Belastingdienst)</td>
-        </tr>
+        <tr><td>Consultas sin relación comercial</td><td>Máximo 12 meses desde el último contacto</td></tr>
+        <tr><td>Datos de clientes</td><td>Durante la relación comercial y hasta 7 años posteriores, conforme a las obligaciones fiscales y contables de los Países Bajos (Belastingdienst)</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 8. Derechos -->
   <div class="policy-section reveal">
     <span class="policy-num">08</span>
     <h2>Tus derechos</h2>
     <p>Tenés derecho a acceder a tus datos, rectificarlos, solicitar su supresión, limitar su tratamiento, oponerte al mismo y solicitar su portabilidad.</p>
     <div class="info-box">
-      <p>Para ejercer cualquiera de estos derechos escribinos a <a href="mailto:privacidad@motordetiempo.com">privacidad@motordetiempo.com</a>. Respondemos en un plazo máximo de <strong>30 días corridos</strong>.</p>
+      <p>Para ejercer cualquiera de estos derechos escribime a <a href="mailto:privacidad@motordetiempo.com">privacidad@motordetiempo.com</a>. Respondo en un plazo máximo de <strong>30 días corridos</strong>.</p>
     </div>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 9. Cookies -->
   <div class="policy-section reveal">
     <span class="policy-num">09</span>
     <h2>Cookies</h2>
-    <p>Este sitio utiliza cookies propias y de terceros (Calendly). Para más información y para gestionar tus preferencias, usá el banner que aparece al ingresar al sitio o el link "Gestionar cookies" en el pie de página.</p>
+    <p>Este sitio utiliza cookies propias y de terceros (Calendly). Para gestionar tus preferencias usá el banner al ingresar al sitio o el link "Gestionar cookies" en el pie de página.</p>
   </div>
 
   <div class="policy-divider"></div>
 
-  <!-- 10. Autoridad -->
   <div class="policy-section reveal">
     <span class="policy-num">10</span>
     <h2>Autoridad de control</h2>
     <p>La autoridad de control principal es la <strong style="color:var(--fg);font-family:var(--sans)">Autoriteit Persoonsgegevens (AP)</strong> de los Países Bajos: <a href="https://www.autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener noreferrer">autoriteitpersoonsgegevens.nl</a>.</p>
-    <p>Si sos residente en España, también podés presentar una reclamación ante la <strong style="color:var(--fg);font-family:var(--sans)">AEPD</strong>: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.</p>
-    <p>Si sos residente en Argentina, podés hacerlo ante la <strong style="color:var(--fg);font-family:var(--sans)">AAIP</strong>: <a href="https://www.argentina.gob.ar/aaip" target="_blank" rel="noopener noreferrer">argentina.gob.ar/aaip</a>.</p>
+    <p>Si sos residente en España podés presentar una reclamación ante la <strong style="color:var(--fg);font-family:var(--sans)">AEPD</strong>: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>.</p>
+    <p>Si sos residente en Argentina podés hacerlo ante la <strong style="color:var(--fg);font-family:var(--sans)">AAIP</strong>: <a href="https://www.argentina.gob.ar/aaip" target="_blank" rel="noopener noreferrer">argentina.gob.ar/aaip</a>.</p>
   </div>
 
 </main>
 
-<!-- FOOTER -->
 <footer>
-  <a href="index.html" class="footer-logo">Motor de Tiempo</a>
-  <ul class="footer-links">
-    <li><a href="index.html">Soluciones</a></li>
-    <li><a href="academy.html">Motor Academy</a></li>
-    <li><a href="index.html#nosotros">Nosotros</a></li>
-    <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
-    <li><a href="privacidad.html">Privacidad</a></li>
-  </ul>
-  <span class="footer-copy">© 2026 Motor de Tiempo</span>
+  <div class="footer-main">
+    <a href="index.html" class="footer-logo">Motor de Tiempo</a>
+    <ul class="footer-links">
+      <li><a href="index.html">Soluciones</a></li>
+      <li><a href="academy.html">Motor Academy</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Motor de Tiempo · Rotterdam, Países Bajos</span>
+  </div>
+  <div class="footer-legal">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="aviso-legal.html">Aviso legal</a>
+    <button onclick="showCookieBanner()">Gestionar cookies</button>
+  </div>
 </footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <p class="cookie-text">Usamos cookies para el funcionamiento del sitio y para el widget de agendamiento (Calendly). Podés aceptarlas, rechazar las opcionales o configurar tus preferencias.</p>
+    <div class="cookie-btns">
+      <button class="cookie-btn" onclick="cookieAcceptAll()">Aceptar todo</button>
+      <button class="cookie-btn" onclick="cookieNecessary()">Solo necesarias</button>
+      <button class="cookie-btn" onclick="cookieToggleConfig()">Configurar</button>
+    </div>
+    <div id="cookie-config">
+      <div class="cookie-cat">
+        <div><div class="cookie-cat-label">Cookies necesarias</div><div class="cookie-cat-desc">Necesarias para el funcionamiento básico del sitio. No requieren consentimiento.</div></div>
+        <span class="cookie-always">Siempre activas</span>
+      </div>
+      <div class="cookie-cat">
+        <div><div class="cookie-cat-label">Cookies de Calendly (terceros)</div><div class="cookie-cat-desc">Calendly coloca cookies al cargar el widget. Si las rechazás, los botones de agendar te llevan a Calendly en nueva pestaña sin widget embebido.</div></div>
+        <input type="checkbox" class="cookie-toggle" id="toggle-calendly">
+      </div>
+      <button class="cookie-save" onclick="cookieSavePrefs()">Guardar preferencias</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const COOKIE_KEY = 'cookieConsent';
+function showCookieBanner() { document.getElementById('cookie-banner').style.display = 'block'; }
+function hideCookieBanner() { document.getElementById('cookie-banner').style.display = 'none'; }
+function cookieAcceptAll() { localStorage.setItem(COOKIE_KEY, 'all'); hideCookieBanner(); }
+function cookieNecessary() { localStorage.setItem(COOKIE_KEY, 'necessary'); hideCookieBanner(); }
+function cookieToggleConfig() { document.getElementById('cookie-config').classList.toggle('open'); }
+function cookieSavePrefs() { localStorage.setItem(COOKIE_KEY, document.getElementById('toggle-calendly').checked ? 'all' : 'custom'); hideCookieBanner(); }
+(function() { if (!localStorage.getItem(COOKIE_KEY)) showCookieBanner(); })();
 </script>
 </body>
 </html>

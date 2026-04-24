@@ -448,31 +448,16 @@ h3 { font-family: var(--sans); font-weight: 600; font-size: 1.1rem; }
 .cta-email:hover { color: var(--accent2); }
 
 /* ── FOOTER ── */
-footer {
-  padding: 28px 40px;
-  border-top: 1px solid var(--border);
-}
-.footer-main {
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
-}
-.footer-legal {
-  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
-  margin-top: 16px; padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-.footer-legal a {
-  color: var(--fg-muted); font-size: 0.75rem; text-decoration: none;
-  font-family: var(--mono); transition: color 0.2s; cursor: pointer;
-}
-.footer-legal a:hover { color: var(--fg-dim); }
-.footer-logo {
-  font-family: var(--sans); font-weight: 700;
-  font-size: 0.9rem; color: var(--fg-dim); text-decoration: none;
-}
+footer { padding: 28px 40px; border-top: 1px solid var(--border); }
+.footer-main { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: var(--fg-dim); text-decoration: none; }
 .footer-links { display: flex; gap: 24px; list-style: none; }
 .footer-links a { color: var(--fg-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
 .footer-links a:hover { color: var(--fg-dim); }
 .footer-copy { font-size: 0.75rem; color: var(--fg-muted); font-family: var(--mono); }
+.footer-legal { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.footer-legal a, .footer-legal button { color: var(--fg-muted); font-size: 0.75rem; text-decoration: none; font-family: var(--mono); background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s; }
+.footer-legal a:hover, .footer-legal button:hover { color: var(--fg-dim); }
 
 /* ── SCROLL REVEAL ── */
 .reveal { opacity:0; transform: translateY(28px); transition: opacity 0.75s, transform 0.75s; }
@@ -807,6 +792,43 @@ footer {
   .footer-main { flex-direction: column; align-items: flex-start; gap: 12px; }
   .footer-links { flex-wrap: wrap; justify-content: center; }
 }
+
+/* ── COOKIE BANNER ── */
+#cookie-banner {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9000;
+  background: rgba(8,8,15,0.97);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  padding: 20px 40px;
+  font-family: var(--body);
+}
+.cookie-inner { max-width: 1100px; margin: 0 auto; }
+.cookie-text { font-size: 0.83rem; color: var(--fg-dim); line-height: 1.6; margin-bottom: 14px; }
+.cookie-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.cookie-btn {
+  font-family: var(--sans); font-weight: 600; font-size: 0.8rem;
+  padding: 9px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer; background: rgba(255,255,255,0.05); color: var(--fg-dim);
+  transition: all 0.15s;
+}
+.cookie-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg); }
+#cookie-config {
+  display: none; margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+#cookie-config.open { display: block; }
+.cookie-cat { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cookie-cat:last-of-type { border-bottom: none; }
+.cookie-cat-label { font-family: var(--sans); font-weight: 600; font-size: 0.82rem; color: var(--fg); margin-bottom: 3px; }
+.cookie-cat-desc { font-size: 0.75rem; color: var(--fg-muted); line-height: 1.5; }
+.cookie-always { font-family: var(--mono); font-size: 0.68rem; color: var(--green); background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.cookie-toggle { appearance: none; -webkit-appearance: none; width: 38px; height: 20px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); position: relative; transition: background 0.2s; flex-shrink: 0; }
+.cookie-toggle:checked { background: var(--accent); border-color: var(--accent); }
+.cookie-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); transition: left 0.2s, background 0.2s; }
+.cookie-toggle:checked::after { left: 21px; background: #fff; }
+.cookie-save { margin-top: 12px; font-family: var(--sans); font-weight: 600; font-size: 0.8rem; padding: 9px 22px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black)); color: #fff; cursor: pointer; transition: opacity 0.2s; }
+.cookie-save:hover { opacity: 0.88; }
+@media (max-width: 768px) { #cookie-banner { padding: 16px 20px; } .cookie-btns { flex-direction: column; } .cookie-btn { width: 100%; text-align: center; } }
 </style>
 </head>
 <body>
@@ -837,7 +859,7 @@ footer {
     <div class="hero-pill">
       <span>✦</span> Implementación de IA y automatizaciones para empresas
     </div>
-    <h1>Tu equipo trabaja en<br>lo que importa.<br><span class="grad">Nosotros automatizamos<br>el resto.</span></h1>
+    <h1>Tu equipo trabaja en<br>lo que importa.<br><span class="grad">El resto queda<br>automatizado.</span></h1>
     <p class="hero-sub">Eliminamos los procesos manuales de tu empresa usando inteligencia artificial. Sin que necesites contratar un equipo de IT.</p>
     <div class="hero-actions">
       <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank">Agendar reunión gratuita →</a>
@@ -872,19 +894,19 @@ footer {
     <div class="step-card reveal reveal-d1">
       <div class="step-connector"></div>
       <div class="step-num-badge">01</div>
-      <h3>Nos contás tu problema</h3>
-      <p>Reunión gratuita de 30 minutos. Analizamos qué procesos manuales te están costando tiempo y plata.</p>
+      <h3>Nos contás el problema</h3>
+      <p>Reunión gratuita de 30 minutos. Se analizan qué procesos manuales te están costando tiempo y plata.</p>
     </div>
     <div class="step-card reveal reveal-d2">
       <div class="step-connector"></div>
       <div class="step-num-badge">02</div>
-      <h3>Construimos la solución</h3>
-      <p>Diseñamos e implementamos el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
+      <h3>Se construye la solución</h3>
+      <p>Se diseña e implementa el flujo automatizado. Vos no tocás nada técnico — solo aprobás el resultado.</p>
     </div>
     <div class="step-card reveal reveal-d3">
       <div class="step-num-badge">03</div>
       <h3>Funciona solo</h3>
-      <p>Entregamos todo funcionando. Nos quedamos disponibles para mantenimiento y mejoras continuas.</p>
+      <p>Se entrega todo funcionando. Motor de Tiempo queda disponible para mantenimiento y mejoras continuas.</p>
     </div>
   </div>
 </section>
@@ -896,7 +918,7 @@ footer {
       <span class="section-eyebrow reveal">// servicios</span>
       <h2 class="reveal">Elegí cómo trabajar<br>con nosotros.</h2>
     </div>
-    <p class="reveal" style="padding-top:48px;">No vendemos herramientas ni paquetes cerrados. Nos sentamos con vos, entendemos cómo trabaja tu empresa, y diseñamos algo que se adapta exactamente a ese problema.</p>
+    <p class="reveal" style="padding-top:48px;">No vendemos herramientas ni paquetes cerrados. Nos sentamos con vos a entender cómo trabaja tu empresa y a diseñar algo que se adapta exactamente a ese problema.</p>
   </div>
 
   <!-- SERVICE CARDS -->
@@ -909,7 +931,7 @@ footer {
           <div class="service-tagline">Vos no tocás nada</div>
         </div>
       </div>
-      <p class="service-desc">Implementamos y operamos la automatización por vos. Ideal para comercios, consultorios y distribuidoras sin equipo IT. Solo describís el problema — nosotros hacemos el resto.</p>
+      <p class="service-desc">Implementamos y operamos la automatización por vos. Ideal para comercios, consultorios y distribuidoras sin equipo IT. Solo describís el problema — Motor de Tiempo hace el resto.</p>
       <ul class="service-list">
         <li>Bot de WhatsApp con menú automatizado</li>
         <li>Procesador de facturas y pedidos</li>
@@ -926,7 +948,7 @@ footer {
           <div class="service-tagline">Lo construimos juntos</div>
         </div>
       </div>
-      <p class="service-desc">Tenés un problema específico que ningún producto estándar resuelve. Trabajamos con tu equipo para diseñar e implementar la solución a medida con IA.</p>
+      <p class="service-desc">Tenés un problema específico que ningún producto estándar resuelve. Se trabaja con tu equipo para diseñar e implementar la solución a medida con IA.</p>
       <ul class="service-list">
         <li>Diagnóstico del proceso actual</li>
         <li>Diseño de solución personalizada con IA</li>
@@ -1061,20 +1083,20 @@ footer {
 </section>
 
 <!-- VALUE PROPS -->
-<section id="por-que" class="section props-section">
+<section class="section props-section">
   <div class="props-inner">
     <div class="props-header">
       <div>
         <span class="section-eyebrow reveal">// por qué elegirnos</span>
-        <h2 class="reveal">No tenés equipo de IT.<br><span class="grad">Nos tenés a nosotros.</span></h2>
+        <h2 class="reveal">No tenés equipo de IT.<br><span class="grad">Tenés a Motor de Tiempo.</span></h2>
       </div>
-      <p class="reveal">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hacemos nosotros.</p>
+      <p class="reveal">No hace falta entender cómo funciona la tecnología. Solo hace falta saber qué problema querés resolver. El resto lo hace Motor de Tiempo.</p>
     </div>
     <div class="props-grid">
       <div class="prop-card reveal reveal-d1">
         <div class="prop-value">0</div>
         <h3>Fricción técnica</h3>
-        <p>Entregamos todo funcionando. Vos no tocás nada técnico durante el proceso.</p>
+        <p>Entregamos todo funcionando. Ningún requerimiento técnico de tu parte durante el proceso.</p>
       </div>
       <div class="prop-card reveal reveal-d2">
         <div class="prop-value">2–4</div>
@@ -1093,38 +1115,9 @@ footer {
 <!-- NOSOTROS -->
 <section id="nosotros" class="section">
   <div style="max-width:1100px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
-      <div>
-        <span class="section-eyebrow reveal">// nosotros</span>
-        <h2 class="reveal">Un equipo pequeño con<br>foco en resultados.</h2>
-        <p class="reveal" style="color:var(--fg-dim);font-size:0.95rem;line-height:1.85;margin-top:20px;">Somos Nicolás Echechurre, fundador de Motor de Tiempo. Operamos desde Rotterdam (Países Bajos) con presencia en Argentina, implementando soluciones de IA para empresas que quieren automatizar sin depender de equipos técnicos internos. Cada proyecto lo hacemos nosotros — sin intermediarios, sin subcontratos ocultos.</p>
-      </div>
-      <div class="reveal" style="padding-top:8px;">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(249,115,22,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(249,115,22,0.2),rgba(249,115,22,0.08));border:1px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:1.1rem;color:var(--accent);flex-shrink:0;">NE</div>
-            <div>
-              <div style="font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--fg);margin-bottom:3px;">Nicolás Echechurre</div>
-              <div style="font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.06em;">Fundador &amp; AI Implementation Lead</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
-              <span style="font-size:0.9rem;">📍</span>
-              <span>Rotterdam, Países Bajos 🇳🇱 / Salta, Argentina 🇦🇷</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
-              <span style="font-size:0.9rem;">⚡</span>
-              <span>IA · Automatización · Implementación sin fricción</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
-              <span style="font-size:0.9rem;">✉️</span>
-              <a href="mailto:hola@motordetiempo.com" style="color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(251,146,60,0.3);">hola@motordetiempo.com</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <span class="section-eyebrow reveal">// nosotros</span>
+    <h2 class="reveal" style="max-width:560px;">Un proyecto con foco<br>en resultados.</h2>
+    <p class="reveal" style="color:var(--fg-dim);font-size:1rem;line-height:1.85;margin-top:20px;max-width:640px;">Motor de Tiempo es un estudio especializado en IA y automatización. Trabajamos con empresas en Argentina y España que quieren eliminar procesos manuales y crecer sin depender de equipos técnicos internos. Cada proyecto se hace con dedicación exclusiva — sin intermediarios, sin subcontratos ocultos.</p>
   </div>
 </section>
 
@@ -1138,7 +1131,7 @@ footer {
     <div class="cta-actions reveal">
       <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank" style="font-size:0.95rem;padding:16px 36px;">Agendar reunión gratuita →</a>
       <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
-      <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
+      <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px;opacity:0.7">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
     </div>
   </div>
 </section>
@@ -1158,7 +1151,7 @@ footer {
   <div class="footer-legal">
     <a href="privacidad.html">Privacidad</a>
     <a href="aviso-legal.html">Aviso legal</a>
-    <a href="#" class="mdt-manage-cookies">Gestionar cookies</a>
+    <button onclick="showCookieBanner()">Gestionar cookies</button>
   </div>
 </footer>
 
@@ -1390,6 +1383,65 @@ const obs = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 </script>
-<script src="cookie-banner.js"></script>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <p class="cookie-text">Usamos cookies para el funcionamiento del sitio y para el widget de agendamiento (Calendly). Podés aceptarlas, rechazar las opcionales o configurar tus preferencias.</p>
+    <div class="cookie-btns">
+      <button class="cookie-btn" onclick="cookieAcceptAll()">Aceptar todo</button>
+      <button class="cookie-btn" onclick="cookieNecessary()">Solo necesarias</button>
+      <button class="cookie-btn" onclick="cookieToggleConfig()">Configurar</button>
+    </div>
+    <div id="cookie-config">
+      <div class="cookie-cat">
+        <div>
+          <div class="cookie-cat-label">Cookies necesarias</div>
+          <div class="cookie-cat-desc">Necesarias para el funcionamiento básico del sitio. No requieren consentimiento.</div>
+        </div>
+        <span class="cookie-always">Siempre activas</span>
+      </div>
+      <div class="cookie-cat">
+        <div>
+          <div class="cookie-cat-label">Cookies de Calendly (terceros)</div>
+          <div class="cookie-cat-desc">Calendly coloca cookies al cargar el widget. Si las rechazás, los botones de agendar te llevan a Calendly en nueva pestaña sin widget embebido.</div>
+        </div>
+        <input type="checkbox" class="cookie-toggle" id="toggle-calendly">
+      </div>
+      <button class="cookie-save" onclick="cookieSavePrefs()">Guardar preferencias</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ COOKIE BANNER ═══ */
+const COOKIE_KEY = 'cookieConsent';
+function showCookieBanner() {
+  document.getElementById('cookie-banner').style.display = 'block';
+}
+function hideCookieBanner() {
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function cookieAcceptAll() {
+  localStorage.setItem(COOKIE_KEY, 'all');
+  hideCookieBanner();
+}
+function cookieNecessary() {
+  localStorage.setItem(COOKIE_KEY, 'necessary');
+  hideCookieBanner();
+}
+function cookieToggleConfig() {
+  const cfg = document.getElementById('cookie-config');
+  cfg.classList.toggle('open');
+}
+function cookieSavePrefs() {
+  const calendly = document.getElementById('toggle-calendly').checked;
+  localStorage.setItem(COOKIE_KEY, calendly ? 'all' : 'custom');
+  hideCookieBanner();
+}
+(function() {
+  if (!localStorage.getItem(COOKIE_KEY)) showCookieBanner();
+})();
+</script>
 </body>
 </html>
