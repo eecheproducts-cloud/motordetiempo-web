@@ -313,8 +313,20 @@ h3 { font-family: var(--sans); font-weight: 600; font-size: 1.1rem; }
 /* ── FOOTER ── */
 footer {
   padding: 28px 40px; border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
 }
+.footer-main {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-legal {
+  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.footer-legal a {
+  color: var(--fg-muted); font-size: 0.75rem; text-decoration: none;
+  font-family: var(--mono); transition: color 0.2s; cursor: pointer;
+}
+.footer-legal a:hover { color: var(--fg-dim); }
 .footer-logo { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: var(--fg-dim); text-decoration: none; }
 .footer-links { display: flex; gap: 24px; list-style: none; }
 .footer-links a { color: var(--fg-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
@@ -336,7 +348,8 @@ footer {
   .section { padding: 72px 20px; }
   .paraquien-grid, .incluye-header, .diferencial-inner { grid-template-columns: 1fr; gap: 32px; }
   .incluye-grid, .steps-flow { grid-template-columns: 1fr; gap: 12px; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 20px; }
+  footer { padding: 24px 20px; }
+  .footer-main { flex-direction: column; align-items: flex-start; gap: 12px; }
   .footer-links { flex-wrap: wrap; justify-content: center; }
 }
 </style>
@@ -497,20 +510,28 @@ footer {
     <div class="cta-actions reveal">
       <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank" style="font-size:0.95rem;padding:16px 36px;">Agendá una charla →</a>
       <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
+      <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <a href="index.html" class="footer-logo">Motor de Tiempo</a>
-  <ul class="footer-links">
-    <li><a href="index.html">Soluciones</a></li>
-    <li><a href="academy.html">Motor Academy</a></li>
-    <li><a href="index.html#nosotros">Nosotros</a></li>
-    <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
-  </ul>
-  <span class="footer-copy">© 2025 Motor de Tiempo</span>
+  <div class="footer-main">
+    <a href="index.html" class="footer-logo">Motor de Tiempo</a>
+    <ul class="footer-links">
+      <li><a href="index.html">Soluciones</a></li>
+      <li><a href="academy.html">Motor Academy</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Motor de Tiempo · Rotterdam, Países Bajos</span>
+  </div>
+  <div class="footer-legal">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="aviso-legal.html">Aviso legal</a>
+    <a href="#" class="mdt-manage-cookies">Gestionar cookies</a>
+  </div>
 </footer>
 
 <script>
@@ -519,5 +540,6 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
+<script src="cookie-banner.js"></script>
 </body>
 </html>

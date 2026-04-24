@@ -451,8 +451,20 @@ h3 { font-family: var(--sans); font-weight: 600; font-size: 1.1rem; }
 footer {
   padding: 28px 40px;
   border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
 }
+.footer-main {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-legal {
+  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.footer-legal a {
+  color: var(--fg-muted); font-size: 0.75rem; text-decoration: none;
+  font-family: var(--mono); transition: color 0.2s; cursor: pointer;
+}
+.footer-legal a:hover { color: var(--fg-dim); }
 .footer-logo {
   font-family: var(--sans); font-weight: 700;
   font-size: 0.9rem; color: var(--fg-dim); text-decoration: none;
@@ -469,14 +481,6 @@ footer {
 .reveal-d2 { transition-delay: 0.2s; }
 .reveal-d3 { transition-delay: 0.3s; }
 
-/* ── TWEAKS ── */
-#tweaks-panel {
-  display: none; position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  background: #12121e; border: 1px solid rgba(124,92,252,0.3);
-  border-radius: 14px; padding: 20px; width: 230px;
-  font-size: 0.8rem; box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 32px rgba(124,92,252,0.1);
-  font-family: var(--sans);
-}
 #tweaks-panel h4 {
   font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--fg-muted); margin-bottom: 16px; font-family: var(--mono);
@@ -799,7 +803,8 @@ footer {
   .examples-grid, .props-grid, .demos-grid { grid-template-columns: 1fr; }
   .hero-stats { gap: 24px; flex-wrap: wrap; }
   .stat-sep { display: none; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 20px; }
+  footer { padding: 24px 20px; }
+  .footer-main { flex-direction: column; align-items: flex-start; gap: 12px; }
   .footer-links { flex-wrap: wrap; justify-content: center; }
 }
 </style>
@@ -1056,7 +1061,7 @@ footer {
 </section>
 
 <!-- VALUE PROPS -->
-<section id="nosotros" class="section props-section">
+<section id="por-que" class="section props-section">
   <div class="props-inner">
     <div class="props-header">
       <div>
@@ -1085,6 +1090,44 @@ footer {
   </div>
 </section>
 
+<!-- NOSOTROS -->
+<section id="nosotros" class="section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+      <div>
+        <span class="section-eyebrow reveal">// nosotros</span>
+        <h2 class="reveal">Un equipo pequeño con<br>foco en resultados.</h2>
+        <p class="reveal" style="color:var(--fg-dim);font-size:0.95rem;line-height:1.85;margin-top:20px;">Somos Nicolás Echechurre, fundador de Motor de Tiempo. Operamos desde Rotterdam (Países Bajos) con presencia en Argentina, implementando soluciones de IA para empresas que quieren automatizar sin depender de equipos técnicos internos. Cada proyecto lo hacemos nosotros — sin intermediarios, sin subcontratos ocultos.</p>
+      </div>
+      <div class="reveal" style="padding-top:8px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(249,115,22,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(249,115,22,0.2),rgba(249,115,22,0.08));border:1px solid rgba(249,115,22,0.25);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:1.1rem;color:var(--accent);flex-shrink:0;">NE</div>
+            <div>
+              <div style="font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--fg);margin-bottom:3px;">Nicolás Echechurre</div>
+              <div style="font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.06em;">Fundador &amp; AI Implementation Lead</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
+              <span style="font-size:0.9rem;">📍</span>
+              <span>Rotterdam, Países Bajos 🇳🇱 / Salta, Argentina 🇦🇷</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
+              <span style="font-size:0.9rem;">⚡</span>
+              <span>IA · Automatización · Implementación sin fricción</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--fg-dim);">
+              <span style="font-size:0.9rem;">✉️</span>
+              <a href="mailto:hola@motordetiempo.com" style="color:var(--accent2);text-decoration:none;border-bottom:1px solid rgba(251,146,60,0.3);">hola@motordetiempo.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section id="contacto" class="cta-section">
   <div class="cta-glow"></div>
@@ -1095,49 +1138,30 @@ footer {
     <div class="cta-actions reveal">
       <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank" style="font-size:0.95rem;padding:16px 36px;">Agendar reunión gratuita →</a>
       <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
+      <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-logo">Motor de Tiempo</a>
-  <ul class="footer-links">
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#como-funciona">Cómo funciona</a></li>
-    <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
-  </ul>
-  <span class="footer-copy">© 2025 Motor de Tiempo</span>
+  <div class="footer-main">
+    <a href="#" class="footer-logo">Motor de Tiempo</a>
+    <ul class="footer-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Motor de Tiempo · Rotterdam, Países Bajos</span>
+  </div>
+  <div class="footer-legal">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="aviso-legal.html">Aviso legal</a>
+    <a href="#" class="mdt-manage-cookies">Gestionar cookies</a>
+  </div>
 </footer>
 
-<!-- TWEAKS PANEL -->
-<div id="tweaks-panel">
-  <h4>Tweaks</h4>
-  <div class="tw-row">
-    <label>Acento</label>
-    <input type="color" id="tw-accent" value="#7c5cfc">
-  </div>
-  <div class="tw-row">
-    <label>Acento 2</label>
-    <input type="color" id="tw-accent2" value="#c084fc">
-  </div>
-  <div class="tw-row">
-    <label>Fondo</label>
-    <select id="tw-bg">
-      <option value="#08080f">Negro azulado</option>
-      <option value="#0a0a0a">Negro puro</option>
-      <option value="#080c0f">Negro verdoso</option>
-    </select>
-  </div>
-  <div class="tw-row">
-    <label>Nodos</label>
-    <select id="tw-nodes">
-      <option value="on">Activados</option>
-      <option value="off">Desactivados</option>
-    </select>
-  </div>
-</div>
 
 <script>
 /* ═══ NODES ANIMATION ═══ */
@@ -1365,49 +1389,7 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-/* ═══ TWEAKS ═══ */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"accentColor":"#f97316","accent2Color":"#fb923c","bgColor":"#08080f","nodesOn":"on"}/*EDITMODE-END*/;
-
-function applyTweaks(t) {
-  document.documentElement.style.setProperty('--accent', t.accentColor);
-  document.documentElement.style.setProperty('--accent2', t.accent2Color);
-  document.documentElement.style.setProperty('--bg', t.bgColor);
-  document.documentElement.style.setProperty('--glow', t.accentColor + '55');
-  nodesOn = t.nodesOn !== 'off';
-  if (!nodesOn) ctx.clearRect(0, 0, W, H);
-  document.getElementById('tw-accent').value = t.accentColor;
-  document.getElementById('tw-accent2').value = t.accent2Color;
-  document.getElementById('tw-bg').value = t.bgColor;
-  document.getElementById('tw-nodes').value = t.nodesOn;
-}
-applyTweaks(TWEAK_DEFAULTS);
-
-document.getElementById('tw-accent').addEventListener('input', e => {
-  const v = { ...TWEAK_DEFAULTS, accentColor: e.target.value };
-  applyTweaks(v);
-  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: e.target.value } }, '*');
-});
-document.getElementById('tw-accent2').addEventListener('input', e => {
-  const v = { ...TWEAK_DEFAULTS, accent2Color: e.target.value };
-  applyTweaks(v);
-  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accent2Color: e.target.value } }, '*');
-});
-document.getElementById('tw-bg').addEventListener('change', e => {
-  const v = { ...TWEAK_DEFAULTS, bgColor: e.target.value };
-  applyTweaks(v);
-  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bgColor: e.target.value } }, '*');
-});
-document.getElementById('tw-nodes').addEventListener('change', e => {
-  const v = { ...TWEAK_DEFAULTS, nodesOn: e.target.value };
-  applyTweaks(v);
-  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { nodesOn: e.target.value } }, '*');
-});
-
-window.addEventListener('message', e => {
-  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
-  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
-});
-window.parent.postMessage({ type: '__edit_mode_available' }, '*');
 </script>
+<script src="cookie-banner.js"></script>
 </body>
 </html>
