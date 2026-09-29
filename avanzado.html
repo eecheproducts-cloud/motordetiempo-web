@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA avanzada: proyectos, skills, agentes y Claude Code | Motor de Tiempo</title>
+<meta name="description" content="Mentoría 1:1 para quienes ya usan IA a diario y quieren pasar a sistemas: proyectos, skills, agentes, conectores y Claude Code sobre su trabajo real.">
+<meta property="og:title" content="IA avanzada: proyectos, skills, agentes y Claude Code | Motor de Tiempo">
+<meta property="og:description" content="Mentoría 1:1 para quienes ya usan IA a diario y quieren pasar a sistemas: proyectos, skills, agentes, conectores y Claude Code sobre su trabajo real.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://motordetiempo.com/avanzado.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #08080f;
+  --bg2:     #0e0e1a;
+  --bg3:     #13131f;
+  --border:  rgba(255,255,255,0.07);
+  --fg:      #f0f0ff;
+  --fg-dim:  rgba(240,240,255,0.5);
+  --fg-muted:rgba(240,240,255,0.25);
+  --accent:  #f97316;
+  --accent2: #fb923c;
+  --green:   #4ade80;
+  --glow:    rgba(249,115,22,0.35);
+  --sans:    'Space Grotesk', system-ui, sans-serif;
+  --body:    'Inter', system-ui, sans-serif;
+  --mono:    'Space Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 64px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,15,0.85);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: var(--sans); font-weight: 700; font-size: 1rem;
+  color: var(--fg); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-icon {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--fg-dim); text-decoration: none;
+  font-size: 0.875rem; font-family: var(--sans);
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--fg); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.75rem; color: var(--green); font-family: var(--mono);
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.2);
+  padding: 4px 12px; border-radius: 999px;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.nav-cta {
+  background: var(--accent); color: #fff;
+  font-family: var(--sans); font-weight: 600; font-size: 0.82rem;
+  text-decoration: none; padding: 9px 20px; border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+  animation: nav-pulse 3s 2s infinite;
+}
+.nav-cta::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 3s 1s infinite;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 24px var(--glow); }
+@keyframes shimmer { 0%{left:-100%} 60%,100%{left:160%} }
+@keyframes nav-pulse { 0%,80%,100%{box-shadow:0 0 0 0 var(--glow)} 40%{box-shadow:0 0 0 6px transparent} }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 820px; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.25);
+  border-radius: 999px; padding: 6px 16px;
+  font-size: 0.78rem; font-family: var(--sans); color: var(--accent2);
+  margin-bottom: 40px;
+  animation: fadeUp 0.7s 0.1s both;
+}
+h1 {
+  font-family: var(--sans); font-weight: 700;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1.07; letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.2s both;
+}
+.grad {
+  background: linear-gradient(135deg, #fff 0%, var(--accent2) 60%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub {
+  font-size: 1.1rem; color: var(--fg-dim);
+  max-width: 540px; margin: 0 auto 48px; line-height: 1.75;
+  animation: fadeUp 0.8s 0.3s both;
+}
+.hero-actions {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  animation: fadeUp 0.8s 0.45s both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black));
+  color: #fff; font-family: var(--sans); font-weight: 600;
+  font-size: 0.9rem; text-decoration: none;
+  padding: 14px 28px; border-radius: 10px;
+  box-shadow: 0 0 32px color-mix(in oklch, var(--accent) 50%, transparent);
+  transition: box-shadow 0.25s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 2.4s infinite;
+}
+.btn-primary:hover { box-shadow: 0 0 52px color-mix(in oklch, var(--accent) 70%, transparent); transform: translateY(-3px) scale(1.02); }
+.btn-primary:active { transform: scale(0.98); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+/* ── SECTIONS ── */
+.section { padding: 100px 40px; border-top: 1px solid var(--border); position: relative; }
+.section-eyebrow {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block;
+}
+h2 {
+  font-family: var(--sans); font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1; letter-spacing: -0.025em;
+}
+h3 { font-family: var(--sans); font-weight: 600; font-size: 1.1rem; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+/* ── PARA QUIÉN ── */
+.paraquien-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: start; margin-top: 0;
+}
+.paraquien-copy p { color: var(--fg-dim); font-size: 1rem; line-height: 1.8; margin-top: 16px; }
+.paraquien-bullets { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+.bullet-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 22px;
+  display: flex; gap: 14px; align-items: flex-start;
+  transition: border-color 0.3s, transform 0.25s;
+}
+.bullet-card:hover { border-color: rgba(249,115,22,0.3); transform: translateX(4px); }
+.bullet-num {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+  background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2);
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.bullet-card p { color: rgba(240,240,255,0.75); font-size: 0.9rem; line-height: 1.6; }
+
+/* ── QUÉ INCLUYE ── */
+.incluye-section { background: var(--bg2); }
+.incluye-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: end; margin-bottom: 56px;
+}
+.incluye-header p { color: var(--fg-dim); line-height: 1.8; }
+.incluye-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.incluye-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 22px;
+  transition: border-color 0.3s, transform 0.25s;
+  position: relative; overflow: hidden;
+}
+.incluye-card:hover { border-color: rgba(249,115,22,0.3); transform: translateY(-3px); }
+.incluye-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0; transition: opacity 0.3s;
+}
+.incluye-card:hover::after { opacity: 1; }
+.incluye-icon { font-size: 1.4rem; margin-bottom: 14px; display: block; }
+.incluye-card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+.incluye-card p { color: var(--fg-dim); font-size: 0.83rem; line-height: 1.6; }
+
+/* ── CÓMO FUNCIONA ── */
+.steps-header { margin-bottom: 56px; }
+.steps-flow {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 2px;
+}
+.step-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 40px 36px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.step-card:hover { border-color: rgba(249,115,22,0.3); transform: translateY(-4px); }
+.step-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(249,115,22,0.05) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.step-card:hover::before { opacity: 1; }
+.step-num-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.25);
+  border-radius: 9px; font-family: var(--mono); font-size: 0.8rem;
+  color: var(--accent); margin-bottom: 24px;
+}
+.step-card h3 { font-size: 1.15rem; margin-bottom: 12px; }
+.step-card p { color: var(--fg-dim); font-size: 0.9rem; line-height: 1.7; }
+
+/* ── DIFERENCIAL ── */
+.diferencial-section {
+  background: var(--bg2);
+}
+.diferencial-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.diferencial-copy p { color: var(--fg-dim); font-size: 1rem; line-height: 1.85; margin-top: 20px; }
+.diferencial-quote {
+  background: var(--bg); border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 16px; padding: 40px;
+  border-left: 3px solid var(--accent);
+  position: relative;
+}
+.diferencial-quote::before {
+  content: '"';
+  font-family: var(--sans); font-size: 5rem; line-height: 1;
+  color: rgba(249,115,22,0.15);
+  position: absolute; top: 16px; left: 24px;
+}
+.diferencial-quote p {
+  font-family: var(--sans); font-size: 1.1rem; font-weight: 500;
+  line-height: 1.7; color: var(--fg); position: relative; z-index: 1;
+  padding-top: 16px;
+}
+.diferencial-quote cite {
+  display: block; margin-top: 16px;
+  font-style: normal; font-size: 0.8rem;
+  color: var(--accent); font-family: var(--mono);
+}
+
+/* ── CTA ── */
+.cta-section {
+  text-align: center; padding: 120px 40px;
+  border-top: 1px solid var(--border); position: relative; overflow: hidden;
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(249,115,22,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+.cta-inner h2 { margin-bottom: 20px; }
+.cta-inner p { color: var(--fg-dim); margin-bottom: 44px; font-size: 1rem; }
+.cta-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.cta-email { color: var(--fg-muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); transition: color 0.2s; }
+.cta-email:hover { color: var(--accent2); }
+
+/* ── FOOTER ── */
+footer { padding: 28px 40px; border-top: 1px solid var(--border); }
+.footer-main { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: var(--fg-dim); text-decoration: none; }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { color: var(--fg-muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--fg-dim); }
+.footer-copy { font-size: 0.75rem; color: var(--fg-muted); font-family: var(--mono); }
+.footer-legal { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.footer-legal a, .footer-legal button { color: var(--fg-muted); font-size: 0.75rem; text-decoration: none; font-family: var(--mono); background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s; }
+.footer-legal a:hover, .footer-legal button:hover { color: var(--fg-dim); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.75s, transform 0.75s; }
+.reveal.visible { opacity:1; transform:none; }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+.reveal-d3 { transition-delay:0.3s; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-badge { display: none; }
+  .hero, .section, .cta-section { padding: 100px 20px 60px; }
+  .section { padding: 72px 20px; }
+  .paraquien-grid, .incluye-header, .diferencial-inner { grid-template-columns: 1fr; gap: 32px; }
+  .incluye-grid, .steps-flow { grid-template-columns: 1fr; gap: 12px; }
+  footer { padding: 24px 20px; }
+  .footer-main { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+
+/* ── COOKIE BANNER ── */
+#cookie-banner { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: rgba(8,8,15,0.97); border-top: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 20px 40px; font-family: var(--body); }
+.ck-inner { max-width: 1100px; margin: 0 auto; }
+.ck-text { font-size: 0.83rem; color: var(--fg-dim); line-height: 1.6; margin-bottom: 14px; }
+.ck-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.ck-btn { font-family: var(--sans); font-weight: 600; font-size: 0.8rem; padding: 9px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: var(--fg-dim); transition: all 0.15s; }
+.ck-btn:hover { background: rgba(255,255,255,0.11); color: var(--fg); }
+#ck-config { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.07); }
+#ck-config.open { display: block; }
+.ck-cat { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.ck-cat:last-of-type { border-bottom: none; }
+.ck-cat-title { font-family: var(--sans); font-weight: 600; font-size: 0.82rem; color: var(--fg); margin-bottom: 4px; }
+.ck-cat-desc { font-size: 0.75rem; color: var(--fg-muted); line-height: 1.55; max-width: 620px; }
+.ck-always { font-family: var(--mono); font-size: 0.68rem; color: var(--green); background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); padding: 3px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.ck-toggle { appearance: none; -webkit-appearance: none; width: 38px; height: 20px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); position: relative; transition: background 0.2s; flex-shrink: 0; margin-top: 2px; }
+.ck-toggle:checked { background: var(--accent); border-color: var(--accent); }
+.ck-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); transition: left 0.2s, background 0.2s; }
+.ck-toggle:checked::after { left: 21px; background: #fff; }
+.ck-save { margin-top: 14px; font-family: var(--sans); font-weight: 600; font-size: 0.8rem; padding: 9px 22px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black)); color: #fff; cursor: pointer; }
+.ck-save:hover { opacity: 0.88; }
+@media (max-width: 768px) { #cookie-banner { padding: 16px 20px; } .ck-btns { flex-direction: column; } .ck-btn { text-align: center; } }
+
+#primera-sesion .incluye-card { background: var(--bg2); }
+#primera-sesion .incluye-card h3 { font-size: 1.05rem; }
+
+/* ── NAV RESPONSIVE (caminos) ── */
+@media (max-width: 1180px) { .nav-badge { display: none; } .nav-links { gap: 20px; } }
+@media (max-width: 920px) { .nav-links { display: none; } }
+.footer-links { flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    Motor de Tiempo
+  </a>
+  <ul class="nav-links">
+    <li><a href="mentor.html">Aprender IA</a></li>
+    <li><a href="avanzado.html" class="active">IA avanzada</a></li>
+    <li><a href="academy.html">Empresas</a></li>
+    <li><a href="automatizar.html">Automatizar</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-badge"><span class="dot"></span>Disponible</div>
+    <a href="https://calendly.com/hola-motordetiempo/30min" class="nav-cta" target="_blank" rel="noopener noreferrer">Agendar reunión</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-pill">✦ Mentoría 1:1 para quienes ya usan IA</div>
+    <h1>Ya usás IA.<br><span class="grad">Ahora hacé que trabaje por vos.</span></h1>
+    <p class="hero-sub">Le preguntás cosas a la IA todos los días, pero sentís que siempre empezás de cero. Te ayudamos a pasar de preguntas y respuestas a sistemas: proyectos, skills, agentes, conectores y Claude Code, armados sobre tu trabajo real.</p>
+    <div class="hero-actions">
+      <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener noreferrer" class="btn-primary">Reservá tu primera sesión →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRIMERA SESIÓN -->
+<section class="section" id="primera-sesion" style="padding-top:72px;padding-bottom:72px;">
+  <div class="section-inner">
+    <div class="incluye-grid">
+      <div class="incluye-card reveal reveal-d1">
+        <span class="incluye-icon">⚡</span>
+        <h3>Lo usás al día siguiente</h3>
+        <p>De la primera sesión salís con un proyecto, una skill o un flujo funcionando sobre una tarea tuya.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d2">
+        <span class="incluye-icon">🧠</span>
+        <h3>De preguntas a sistemas</h3>
+        <p>Dejás de repetir contexto y prompts. La IA trabaja con tu información y tus procesos.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d3">
+        <span class="incluye-icon">📎</span>
+        <h3>Material después de cada sesión</h3>
+        <p>Recibís lo que armamos, cómo mantenerlo y los pasos para seguir sumando por tu cuenta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<section class="section" id="para-quien">
+  <div class="section-inner">
+    <div class="paraquien-grid">
+      <div class="paraquien-copy">
+        <span class="section-eyebrow reveal">// para quién es</span>
+        <h2 class="reveal">¿Te suena?</h2>
+        <p class="reveal">Es para vos si usás ChatGPT, Claude o Gemini a diario y sabés que le podrías sacar mucho más, pero no tenés tiempo de investigar todo solo.</p>
+      </div>
+      <div class="paraquien-bullets">
+        <div class="bullet-card reveal reveal-d1">
+          <div class="bullet-num">01</div>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Repetís el mismo contexto</strong> en cada chat: quién sos, en qué proyecto estás, qué tono querés.</p>
+        </div>
+        <div class="bullet-card reveal reveal-d2">
+          <div class="bullet-num">02</div>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Tenés prompts guardados en una nota</strong> y los copiás y pegás a mano cada vez.</p>
+        </div>
+        <div class="bullet-card reveal reveal-d3">
+          <div class="bullet-num">03</div>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Querés que la IA lea tu mail, tu Drive o tu calendario</strong> y no sabés cómo conectarla de forma segura.</p>
+        </div>
+        <div class="bullet-card reveal reveal-d1">
+          <div class="bullet-num">04</div>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Escuchaste de agentes y Claude Code</strong> y querés usarlos en tu trabajo, no solo verlos en un video.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ INCLUYE -->
+<section class="section incluye-section" id="incluye">
+  <div class="section-inner">
+    <div class="incluye-header">
+      <div>
+        <span class="section-eyebrow reveal">// qué vemos</span>
+        <h2 class="reveal">Tu trabajo,<br>convertido en sistema.</h2>
+      </div>
+      <p class="reveal">Elegimos juntos qué piezas te sirven según tu trabajo. No hace falta ser programador para ninguna.</p>
+    </div>
+    <div class="incluye-grid">
+      <div class="incluye-card reveal reveal-d1">
+        <span class="incluye-icon">📁</span>
+        <h3>Proyectos</h3>
+        <p>Espacios con tu contexto, documentos e instrucciones fijas para no explicar todo de nuevo en cada chat.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d2">
+        <span class="incluye-icon">🧩</span>
+        <h3>Skills</h3>
+        <p>Tus procesos repetidos convertidos en instrucciones reutilizables que la IA sigue siempre igual.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d3">
+        <span class="incluye-icon">🔌</span>
+        <h3>Conectores</h3>
+        <p>La IA conectada a tu mail, tu Drive, tu Notion o tu calendario, para trabajar con tu información real.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d1">
+        <span class="incluye-icon">🤖</span>
+        <h3>Agentes</h3>
+        <p>Tareas de varios pasos que la IA resuelve sola: investigar, comparar, redactar y ordenar.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d2">
+        <span class="incluye-icon">💻</span>
+        <h3>Claude Code</h3>
+        <p>Automatizar tu propio trabajo con archivos, planillas y scripts, aunque no seas programador.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d3">
+        <span class="incluye-icon">⚙️</span>
+        <h3>Tu sistema propio</h3>
+        <p>Salís con tus flujos armados, documentados y listos para seguir usando y mejorando.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="section" id="como-funciona">
+  <div class="section-inner">
+    <div class="steps-header">
+      <span class="section-eyebrow reveal">// cómo funciona</span>
+      <h2 class="reveal">Tres pasos, sin vueltas.</h2>
+    </div>
+    <div class="steps-flow">
+      <div class="step-card reveal reveal-d1">
+        <div class="step-num-badge">01</div>
+        <h3>Mapeamos tu uso actual</h3>
+        <p>Vemos cómo usás la IA hoy y qué tareas se repiten en tu semana.</p>
+      </div>
+      <div class="step-card reveal reveal-d2">
+        <div class="step-num-badge">02</div>
+        <h3>Primera sesión, primer sistema</h3>
+        <p>Armamos juntos un proyecto, una skill o un agente sobre una tarea real tuya. Al día siguiente ya lo estás usando.</p>
+      </div>
+      <div class="step-card reveal reveal-d3">
+        <div class="step-num-badge">03</div>
+        <h3>Sumamos piezas</h3>
+        <p>Cada sesión agrega algo nuevo: conectores, agentes, Claude Code. Siempre con material de soporte para repetirlo solo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAL -->
+<section class="section diferencial-section" id="diferencial">
+  <div class="diferencial-inner">
+    <div class="diferencial-copy">
+      <span class="section-eyebrow reveal">// diferencial</span>
+      <h2 class="reveal">No es teoría de agentes.<br><span class="grad">Es tu trabajo, automatizado.</span></h2>
+      <p class="reveal">No vas a ver demos genéricas ni cursos de horas. Trabajamos sobre tus tareas, tus archivos y tus herramientas, y de cada sesión salís con algo que ya funciona. Después recibís el material de soporte con lo que armamos y cómo mantenerlo.</p>
+    </div>
+    <div class="diferencial-quote reveal">
+      <p>Pasás de hacerle preguntas a la IA a tener un sistema que trabaja con vos.</p>
+      <cite>Motor Mentor · Avanzado</cite>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contacto">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <span class="section-eyebrow reveal" style="display:block;">// empezá hoy</span>
+    <h2 class="reveal">¿Listo para pasar<br>de preguntas a sistemas?</h2>
+    <p class="reveal">La primera charla es gratis.</p>
+    <div class="cta-actions reveal">
+      <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.95rem;padding:16px 36px;">Reservá tu primera sesión →</a>
+      <a href="mentor.html" class="cta-email" style="font-family:var(--sans);">¿Recién empezás con IA? Mirá Aprender IA →</a>
+      <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
+      <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px;opacity:0.6">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <a href="index.html" class="footer-logo">Motor de Tiempo</a>
+    <ul class="footer-links">
+      <li><a href="mentor.html">Aprender IA</a></li>
+      <li><a href="avanzado.html">IA avanzada</a></li>
+      <li><a href="academy.html">Empresas</a></li>
+      <li><a href="automatizar.html">Automatizar</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Motor de Tiempo · Países Bajos</span>
+  </div>
+  <div class="footer-legal">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="aviso-legal.html">Aviso legal</a>
+    <button onclick="showCookieBanner()">Gestionar cookies</button>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="ck-inner">
+    <p class="ck-text">Usamos cookies para el funcionamiento del sitio y para el widget de agendamiento (Calendly). Podés aceptarlas, rechazar las opcionales o configurar tus preferencias.</p>
+    <div class="ck-btns">
+      <button class="ck-btn" onclick="cookieAcceptAll()">Aceptar todo</button>
+      <button class="ck-btn" onclick="cookieNecessary()">Solo necesarias</button>
+      <button class="ck-btn" onclick="cookieToggleConfig()">Configurar</button>
+    </div>
+    <div id="ck-config">
+      <div class="ck-cat">
+        <div><div class="ck-cat-title">Cookies necesarias</div><div class="ck-cat-desc">Necesarias para el funcionamiento básico del sitio. No requieren consentimiento.</div></div>
+        <span class="ck-always">Siempre activas</span>
+      </div>
+      <div class="ck-cat">
+        <div><div class="ck-cat-title">Cookies de Calendly (terceros)</div><div class="ck-cat-desc">Calendly coloca cookies al cargar el widget. Si las rechazás, los botones de agendar te llevan a Calendly en nueva pestaña sin widget embebido.</div></div>
+        <input type="checkbox" class="ck-toggle" id="ck-toggle-calendly">
+      </div>
+      <button class="ck-save" onclick="cookieSavePrefs()">Guardar preferencias</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COOKIE_KEY = 'cookieConsent';
+function showCookieBanner() { document.getElementById('cookie-banner').style.display = 'block'; document.getElementById('ck-config').classList.remove('open'); }
+function hideCookieBanner() { document.getElementById('cookie-banner').style.display = 'none'; }
+function cookieAcceptAll() { localStorage.setItem(COOKIE_KEY, 'all'); hideCookieBanner(); }
+function cookieNecessary() { localStorage.setItem(COOKIE_KEY, 'necessary'); hideCookieBanner(); }
+function cookieToggleConfig() { document.getElementById('ck-config').classList.toggle('open'); }
+function cookieSavePrefs() { localStorage.setItem(COOKIE_KEY, document.getElementById('ck-toggle-calendly').checked ? 'all' : 'custom'); hideCookieBanner(); }
+(function() { if (!localStorage.getItem(COOKIE_KEY)) showCookieBanner(); })();
+</script>
+</body>
+</html>
