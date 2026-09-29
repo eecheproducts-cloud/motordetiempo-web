@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motor Mentor — Mentoría 1:1 en IA para tu día a día | Motor de Tiempo</title>
-<meta name="description" content="Mentoría personalizada en inteligencia artificial. Sesiones 1:1 ajustadas a tu rol, tus herramientas y tus objetivos, no un curso genérico.">
-<meta property="og:title" content="Motor Mentor — Mentoría 1:1 en IA para tu día a día | Motor de Tiempo">
-<meta property="og:description" content="Mentoría personalizada en inteligencia artificial. Sesiones 1:1 ajustadas a tu rol, tus herramientas y tus objetivos, no un curso genérico.">
+<title>Motor Mentor: aprendé a usar IA en tu día a día | Motor de Tiempo</title>
+<meta name="description" content="Mentoría 1:1 en IA para quien recién empieza. Sin cursos de horas: trabajamos sobre tu trabajo real y desde la primera sesión aplicás lo que aprendiste.">
+<meta property="og:title" content="Motor Mentor: aprendé a usar IA en tu día a día | Motor de Tiempo">
+<meta property="og:description" content="Mentoría 1:1 en IA para quien recién empieza. Sin cursos de horas: trabajamos sobre tu trabajo real y desde la primera sesión aplicás lo que aprendiste.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://motordetiempo.com/mentor.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -368,6 +368,14 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
 .ck-save { margin-top: 14px; font-family: var(--sans); font-weight: 600; font-size: 0.8rem; padding: 9px 22px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 70%, black)); color: #fff; cursor: pointer; }
 .ck-save:hover { opacity: 0.88; }
 @media (max-width: 768px) { #cookie-banner { padding: 16px 20px; } .ck-btns { flex-direction: column; } .ck-btn { text-align: center; } }
+
+#primera-sesion .incluye-card { background: var(--bg2); }
+#primera-sesion .incluye-card h3 { font-size: 1.05rem; }
+
+/* ── NAV RESPONSIVE (caminos) ── */
+@media (max-width: 1180px) { .nav-badge { display: none; } .nav-links { gap: 20px; } }
+@media (max-width: 920px) { .nav-links { display: none; } }
+.footer-links { flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -379,14 +387,15 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
     Motor de Tiempo
   </a>
   <ul class="nav-links">
-    <li><a href="index.html">Soluciones</a></li>
-    <li><a href="academy.html">Motor Academy</a></li>
-    <li><a href="mentor.html" class="active">Tu Mentor</a></li>
+    <li><a href="mentor.html" class="active">Aprender IA</a></li>
+    <li><a href="avanzado.html">IA avanzada</a></li>
+    <li><a href="academy.html">Empresas</a></li>
+    <li><a href="automatizar.html">Automatizar</a></li>
     <li><a href="index.html#nosotros">Nosotros</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-badge"><span class="dot"></span>Disponible</div>
-    <a href="https://calendly.com/hola-motordetiempo/30min" class="nav-cta" target="_blank">Agendar reunión</a>
+    <a href="https://calendly.com/hola-motordetiempo/30min" class="nav-cta" target="_blank" rel="noopener noreferrer">Agendar reunión</a>
   </div>
 </nav>
 
@@ -394,11 +403,34 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
 <section class="hero">
   <div class="hero-glow"></div>
   <div class="hero-inner">
-    <div class="hero-pill">✦ Mentoría 1:1 en IA, para vos</div>
+    <div class="hero-pill">✦ Mentoría 1:1 para aprender IA desde cero</div>
     <h1>Aprendé a usar IA<br><span class="grad">en tu día a día.</span></h1>
-    <p class="hero-sub">Motor Mentor es acompañamiento personalizado, no un curso genérico. Sesiones 1:1 ajustadas a tu rol, tus herramientas y lo que realmente necesitás resolver.</p>
+    <p class="hero-sub">¿Casi no usás la IA, o solo le hacés alguna pregunta suelta? No necesitás un curso de 5 horas. Escuchamos tu caso, trabajamos sobre tu trabajo real y desde la primera sesión salís sabiendo cosas que podés aplicar al día siguiente.</p>
     <div class="hero-actions">
-      <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank">Reservá tu primera sesión →</a>
+      <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener noreferrer" class="btn-primary">Reservá tu primera sesión →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRIMERA SESIÓN -->
+<section class="section" id="primera-sesion" style="padding-top:72px;padding-bottom:72px;">
+  <div class="section-inner">
+    <div class="incluye-grid">
+      <div class="incluye-card reveal reveal-d1">
+        <span class="incluye-icon">⚡</span>
+        <h3>Aplicás al día siguiente</h3>
+        <p>De la primera sesión salís con algo concreto que ya podés usar en tu trabajo, sin esperar a terminar ningún curso.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d2">
+        <span class="incluye-icon">👂</span>
+        <h3>Tu caso, no un temario</h3>
+        <p>No son 5 horas de curso. Escuchamos qué hacés y trabajamos sobre tus tareas reales.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d3">
+        <span class="incluye-icon">📎</span>
+        <h3>Material después de cada sesión</h3>
+        <p>Recibís un resumen con lo que vimos, los prompts que armamos y los pasos para repetirlo solo.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -409,21 +441,25 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
     <div class="paraquien-grid">
       <div class="paraquien-copy">
         <span class="section-eyebrow reveal">// para quién es</span>
-        <h2 class="reveal">No es<br>para todos.</h2>
-        <p class="reveal">Es para vos si sentís que deberías estar usando más IA en tu trabajo, pero no sabés por dónde empezar ni tenés tiempo de aprenderlo solo.</p>
+        <h2 class="reveal">¿Te suena<br>alguno de estos?</h2>
+        <p class="reveal">Es para vos si sentís que deberías estar usando más IA en tu trabajo, pero no sabés por dónde empezar ni tenés tiempo de hacer un curso. Algunos perfiles con los que trabajamos:</p>
       </div>
       <div class="paraquien-bullets">
         <div class="bullet-card reveal reveal-d1">
           <div class="bullet-num">01</div>
-          <p>Profesionales que quieren aprovechar la IA en su trabajo diario, sin volverse expertos técnicos</p>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Product manager:</strong> resumir entrevistas con usuarios, armar el primer borrador de un documento de producto y ordenar ideas del backlog en minutos.</p>
         </div>
         <div class="bullet-card reveal reveal-d2">
           <div class="bullet-num">02</div>
-          <p>Emprendedores o freelancers que necesitan hacer más con menos tiempo</p>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Dueña de un emprendimiento:</strong> contestar consultas, escribir publicaciones para redes y armar presupuestos sin quedarte hasta tarde.</p>
         </div>
         <div class="bullet-card reveal reveal-d3">
           <div class="bullet-num">03</div>
-          <p>Cualquiera que probó ChatGPT o Claude un par de veces y siente que le falta algo</p>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Profesional independiente:</strong> preparar propuestas, mails a clientes e informes en la mitad del tiempo.</p>
+        </div>
+        <div class="bullet-card reveal reveal-d1">
+          <div class="bullet-num">04</div>
+          <p><strong style="color:var(--fg);font-family:var(--sans);font-weight:600;">Empleado que quiere ser más eficiente:</strong> resumir reuniones, redactar informes y sacar adelante planillas sin pelearte con fórmulas.</p>
         </div>
       </div>
     </div>
@@ -444,22 +480,22 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
       <div class="incluye-card reveal reveal-d1">
         <span class="incluye-icon">🔍</span>
         <h3>Diagnóstico inicial</h3>
-        <p>Qué herramientas y hábitos te sirven, según tu rol y tus objetivos.</p>
+        <p>Qué tareas te conviene resolver con IA primero, según tu rol y tus objetivos.</p>
       </div>
       <div class="incluye-card reveal reveal-d2">
+        <span class="incluye-icon">🧭</span>
+        <h3>Te ayudamos a elegir herramienta</h3>
+        <p>Si todavía no usás ninguna, elegimos entre Claude, ChatGPT o Gemini según para qué la vas a usar y tu presupuesto. Si ya usás una, la aprovechamos mejor.</p>
+      </div>
+      <div class="incluye-card reveal reveal-d3">
         <span class="incluye-icon">🎯</span>
         <h3>Sesiones 1:1</h3>
         <p>A tu ritmo, en el horario que te quede cómodo.</p>
       </div>
-      <div class="incluye-card reveal reveal-d3">
+      <div class="incluye-card reveal reveal-d1">
         <span class="incluye-icon">💬</span>
         <h3>Casos reales tuyos</h3>
         <p>Trabajamos sobre tus tareas de verdad, no ejemplos genéricos.</p>
-      </div>
-      <div class="incluye-card reveal reveal-d1">
-        <span class="incluye-icon">🤖</span>
-        <h3>Herramientas de IA</h3>
-        <p>ChatGPT, Claude y las que ya usás, mejor aprovechadas.</p>
       </div>
       <div class="incluye-card reveal reveal-d2">
         <span class="incluye-icon">✍️</span>
@@ -468,8 +504,8 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
       </div>
       <div class="incluye-card reveal reveal-d3">
         <span class="incluye-icon">📋</span>
-        <h3>Seguimiento</h3>
-        <p>Ajustes y nuevas ideas a medida que cambian tus necesidades.</p>
+        <h3>Material de soporte</h3>
+        <p>Después de cada sesión recibís todo lo que vimos, para repasarlo y aplicarlo sin depender de nadie.</p>
       </div>
     </div>
   </div>
@@ -485,18 +521,18 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
     <div class="steps-flow">
       <div class="step-card reveal reveal-d1">
         <div class="step-num-badge">01</div>
-        <h3>Charla inicial</h3>
-        <p>Se entiende tu trabajo, tus herramientas y dónde la IA te puede ahorrar más tiempo.</p>
+        <h3>Nos contás tu caso</h3>
+        <p>Escuchamos qué hacés, qué te lleva más tiempo y qué herramientas usás (o todavía no usás).</p>
       </div>
       <div class="step-card reveal reveal-d2">
         <div class="step-num-badge">02</div>
-        <h3>Plan a tu medida</h3>
-        <p>Se arma el recorrido de sesiones: qué aprender, en qué orden y con qué herramientas.</p>
+        <h3>Primera sesión, primer resultado</h3>
+        <p>Trabajamos sobre una tarea real tuya. Al día siguiente ya la podés hacer con IA.</p>
       </div>
       <div class="step-card reveal reveal-d3">
         <div class="step-num-badge">03</div>
-        <h3>Sesiones 1:1</h3>
-        <p>Práctica sobre tus tareas reales, con ajustes en el camino.</p>
+        <h3>Seguís a tu ritmo</h3>
+        <p>Sumamos sesiones según lo que necesites, cada una con su material de soporte.</p>
       </div>
     </div>
   </div>
@@ -507,12 +543,12 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
   <div class="diferencial-inner">
     <div class="diferencial-copy">
       <span class="section-eyebrow reveal">// diferencial</span>
-      <h2 class="reveal">No es un curso.<br><span class="grad">Es un mentor.</span></h2>
-      <p class="reveal">La mayoría de los cursos de IA enseñan herramientas genéricas para nadie en particular. Motor Mentor trabaja sobre tu trabajo real, a tu ritmo. Al terminar cada sesión, te llevás algo que ya podés usar.</p>
+      <h2 class="reveal">No son 5 horas de curso.<br><span class="grad">Es tu trabajo, con IA.</span></h2>
+      <p class="reveal">La mayoría de los cursos de IA te hacen ver horas de contenido genérico antes de aplicar algo. Acá es al revés: escuchamos tu caso, trabajamos sobre tu trabajo real y desde la primera sesión salís sabiendo cosas que podés usar al día siguiente.</p>
     </div>
     <div class="diferencial-quote reveal">
-      <p>Al terminar cada sesión, te llevás algo que ya podés usar.</p>
-      <cite>— Motor Mentor</cite>
+      <p>De la primera sesión salís con algo que podés usar mañana.</p>
+      <cite>Motor Mentor</cite>
     </div>
   </div>
 </section>
@@ -522,10 +558,11 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
   <div class="cta-glow"></div>
   <div class="cta-inner">
     <span class="section-eyebrow reveal" style="display:block;">// empezá hoy</span>
-    <h2 class="reveal">¿Querés aprovechar la IA<br>de verdad, a tu manera?</h2>
+    <h2 class="reveal">¿Querés empezar a usar<br>la IA de verdad?</h2>
     <p class="reveal">La primera charla es gratis.</p>
     <div class="cta-actions reveal">
-      <a href="https://calendly.com/hola-motordetiempo/30min" class="btn-primary" target="_blank" style="font-size:0.95rem;padding:16px 36px;">Reservá tu primera sesión →</a>
+      <a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.95rem;padding:16px 36px;">Reservá tu primera sesión →</a>
+      <a href="avanzado.html" class="cta-email" style="font-family:var(--sans);">¿Ya usás IA todos los días? Mirá IA avanzada →</a>
       <a href="mailto:hola@motordetiempo.com" class="cta-email">hola@motordetiempo.com</a>
       <a href="mailto:privacidad@motordetiempo.com" class="cta-email" style="font-size:0.75rem;margin-top:-4px;opacity:0.6">Privacidad y protección de datos: privacidad@motordetiempo.com</a>
     </div>
@@ -537,9 +574,10 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
   <div class="footer-main">
     <a href="index.html" class="footer-logo">Motor de Tiempo</a>
     <ul class="footer-links">
-      <li><a href="index.html">Soluciones</a></li>
-      <li><a href="academy.html">Motor Academy</a></li>
-      <li><a href="mentor.html">Tu Mentor</a></li>
+      <li><a href="mentor.html">Aprender IA</a></li>
+      <li><a href="avanzado.html">IA avanzada</a></li>
+      <li><a href="academy.html">Empresas</a></li>
+      <li><a href="automatizar.html">Automatizar</a></li>
       <li><a href="index.html#nosotros">Nosotros</a></li>
       <li><a href="mailto:hola@motordetiempo.com">Contacto</a></li>
     </ul>
