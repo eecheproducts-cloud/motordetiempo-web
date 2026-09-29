@@ -824,6 +824,25 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
 @media (max-width: 1180px) { .nav-badge { display: none; } .nav-links { gap: 20px; } }
 @media (max-width: 920px) { .nav-links { display: none; } }
 .footer-links { flex-wrap: wrap; }
+
+/* Menú mobile (hamburguesa) */
+.nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(255,255,255,0.04); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 0; }
+.nav-toggle span { display: block; width: 18px; height: 2px; background: #f0f0f5; border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+nav.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+nav.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-links .nav-menu-cta { display: none; }
+@media (max-width: 920px) {
+  .nav-toggle { display: flex; }
+  nav.open .nav-links { display: flex; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; gap: 0; padding: 8px 24px 20px; background: rgba(8,8,15,0.98); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  nav.open .nav-links a { display: block; padding: 14px 0; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+}
+@media (max-width: 520px) {
+  nav { padding: 0 16px; }
+  .nav-right .nav-cta { display: none; }
+  nav.open .nav-links .nav-menu-cta { display: block; }
+  nav.open .nav-links .nav-menu-cta a { margin-top: 12px; border: none; text-align: center; border-radius: 8px; background: #f97316; color: #fff; font-weight: 600; }
+}
 </style>
 </head>
 <body>
@@ -840,10 +859,12 @@ footer { padding: 28px 40px; border-top: 1px solid var(--border); }
     <li><a href="academy.html">Formar equipos</a></li>
     <li><a href="negocio.html" class="active">Para tu negocio</a></li>
     <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li class="nav-menu-cta"><a href="https://calendly.com/hola-motordetiempo/30min" target="_blank" rel="noopener noreferrer">Agendar reunión</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-badge"><span class="dot"></span>Disponible</div>
     <a href="https://calendly.com/hola-motordetiempo/30min" class="nav-cta" target="_blank" rel="noopener noreferrer">Agendar reunión</a>
+    <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -1452,6 +1473,19 @@ function cookieSavePrefs() {
   hideCookieBanner();
 }
 (function() { if (!localStorage.getItem(COOKIE_KEY)) showCookieBanner(); })();
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav'), btn = document.querySelector('.nav-toggle');
+  if (!nav || !btn) return;
+  btn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click', function(){ nav.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+  });
+})();
 </script>
 </body>
 </html>
